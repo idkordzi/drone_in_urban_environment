@@ -1,0 +1,7 @@
+- ros_topic_name: "/gazebo/pose"
+  gz_topic_name: "/world/iris_runway_custom/pose/info"
+  ros_type_name: "geometry_msgs/msg/PoseArray"
+  gz_type_name: "gz.msgs.Pose_V"
+  direction: GZ_TO_ROS
+  publisher_queue: 1
+  lazy: false

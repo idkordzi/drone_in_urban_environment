@@ -1,0 +1,7 @@
+[submodule "drone_simulation/modules/ardupilot_gazebo"]
+	path = drone_simulation/modules/ardupilot_gazebo
+	url = https://github.com/ArduPilot/ardupilot_gazebo.git
+[submodule "drone_navigation_ros/modules/drone_navigation"]
+	path = drone_navigation_ros/modules/drone_navigation
+	url = https://github.com/idkordzi/drone_navigation.git
+	branch = develop

@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<package format="3">
+  <name>drone_simulation</name>
+  <version>1.0.0</version>
+  <description>
+    TBD
+  </description>
+  <maintainer email="igor.kordzi@gmail.com">Igor Kordzi</maintainer>
+  <license>TBD</license>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+
+  <depend>rclcpp</depend>
+  <depend>rclcpp_components</depend>
+
+  <depend>gz-cmake3</depend>
+  <depend>gz-sim8</depend>
+  
+  <depend>ros_gz_bridge</depend>
+  <depend>ros_gz_sim</depend>
+
+  <depend>drone_navigation_ros</depend>
+
+  <exec_depend>ros2launch</exec_depend>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>
