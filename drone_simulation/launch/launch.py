@@ -17,7 +17,7 @@ def generate_launch_description():
   
   config_file_dir = os.path.join(drone_navigation_ros_pkg_path, 'config')
 
-  world_file_path = os.path.join(drone_navigation_ros_pkg_path, 'worlds', 'iris_runway_custom.sdf')
+  world_file_path = os.path.join(drone_navigation_ros_pkg_path, 'worlds', 'test_world.sdf')
 
   gzserver_cmd = IncludeLaunchDescription(
     PythonLaunchDescriptionSource(
@@ -57,14 +57,22 @@ def generate_launch_description():
     executable='drone_flight_controller_node',
     name='drone_flight_controller_node'
   )
+  
+  node_drone_test = Node(
+    package='drone_navigation_ros',
+    namespace='',
+    executable='drone_test_node',
+    name='drone_test_node'
+  )
 
   ld = LaunchDescription()
 
   ld.add_action(gzserver_cmd)
   ld.add_action(gzclient_cmd)
   ld.add_action(ros_gz_bridge)
-  ld.add_action(node_vision)
-  ld.add_action(node_planner)
-  ld.add_action(node_flight_controller)
+  # ld.add_action(node_vision)
+  # ld.add_action(node_planner)
+  # ld.add_action(node_flight_controller)
+  ld.add_action(node_drone_test)
 
   return ld

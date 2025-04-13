@@ -38,6 +38,7 @@ endif()
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(rclcpp_components REQUIRED)
+find_package(sensor_msgs REQUIRED)
 
 find_package(ros_gz_bridge REQUIRED)
 find_package(ros_gz_sim REQUIRED)
@@ -55,34 +56,10 @@ add_subdirectory(modules/ardupilot_gazebo)
 # Build model plugins
 # ################################################################
 
-# add_library(DronePosePublisher
-#   SHARED
-#     plugins/drone_pose_publisher.cc
-#     plugins/drone_pose_publisher.hh
-# )
-# target_link_libraries(DronePosePublisher PRIVATE
-#   gz-sim${GZ_SIM_VER}::gz-sim${GZ_SIM_VER}
-# )
-
-# add_library(CameraRGBD
-#   SHARED
-#     plugins/camera_rgbd.cc
-#     plugins/camera_rgbd.hh
-# )
-# target_link_libraries(CameraRGBD PRIVATE
-#   gz-sim${GZ_SIM_VER}::gz-sim${GZ_SIM_VER}
-# )
 
 # ################################################################
 # Install files
 # ################################################################
-
-# install(
-#   TARGETS
-#   DronePosePublisher
-#   CameraRGBD
-#   DESTINATION lib/${PROJECT_NAME}
-# )
 
 install(
   DIRECTORY
