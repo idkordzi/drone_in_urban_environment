@@ -46,6 +46,7 @@ find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(rclcpp_components REQUIRED)
 
+find_package(std_msgs REQUIRED)
 find_package(geometry_msgs REQUIRED)
 find_package(sensor_msgs REQUIRED)
 find_package(drone_navigation_msgs REQUIRED)
@@ -57,6 +58,7 @@ find_package(cv_bridge REQUIRED)
 # ################################################################
 
 # Add core algorithm
+set(BUILD_FOR_ROS true)
 set(DRONE_NAVIGATION_LIB_ROOT_PATH "${CMAKE_CURRENT_SOURCE_DIR}/modules/drone_navigation/src")
 add_subdirectory(modules/drone_navigation/src)
 
@@ -140,6 +142,32 @@ target_link_libraries(${TargetFlightControllerROS}
     drone_state_estimator 
 )
 
+# Add test class node
+set(TargetDroneTestROS drone_test_node)
+add_executable(${TargetDroneTestROS} 
+  ${CMAKE_CURRENT_SOURCE_DIR}/test/drone_test_class_exec.cpp 
+  ${CMAKE_CURRENT_SOURCE_DIR}/test/drone_test_class.cpp 
+  ${CMAKE_CURRENT_SOURCE_DIR}/test/socketUDP.cpp 
+)
+target_compile_features(${TargetDroneTestROS} PUBLIC cxx_std_17)
+ament_target_dependencies(${TargetDroneTestROS} 
+  PUBLIC 
+    rclcpp 
+    rclcpp_components 
+    std_msgs 
+    geometry_msgs 
+    drone_navigation_msgs 
+)
+target_include_directories(${TargetDroneTestROS} 
+  PUBLIC 
+    ${OpenCV_INCLUDE_DIRS} 
+    ${EIGEN_LIB_ROOT_PATH}
+)
+target_link_libraries(${TargetDroneTestROS} 
+  PUBLIC 
+    ${OpenCV_LIBS}
+)
+
 # ################################################################
 # Install files
 # ################################################################
@@ -148,6 +176,7 @@ install(TARGETS
   ${TargetDroneVisionROS} 
   ${TargetDronePlannerROS} 
   ${TargetFlightControllerROS} 
+  ${TargetDroneTestROS} 
   DESTINATION lib/${PROJECT_NAME} 
 )
 

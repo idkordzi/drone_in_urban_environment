@@ -99,11 +99,24 @@ void DroneVisionROS::detectTarget() {
     unsigned plen = 3;
     unsigned step = this->im_color_cache_->step;
     std::vector<uint8_t>& data = this->im_color_cache_->data;
+
+    if (data.size() != this->config_.im_height_ * this->config_.im_width_ * plen)
+      RCUTILS_LOG_INFO("[WARN] Incoming color image does not meet expected frame size (byte size: %ld)", data.size());
+
     for (unsigned i = 0; i < this->config_.im_height_; i++) {
       for (unsigned j = 0; j < this->config_.im_width_; j++) {
-        cv::Vec3b pixel(data[i*step+j*plen], data[i*step+j*plen+1], data[i*step+j*plen+2]);
-        image.at<cv::Vec3b>(cv::Point(j,i)) = pixel;
+        cv::Vec3b& pixel = image.at<cv::Vec3b>(j, i);
+        pixel[0] = data[i*step+j*plen];
+        pixel[1] = data[i*step+j*plen+1];
+        pixel[2] = data[i*step+j*plen+2];
       }
+    }
+
+    cv::Size im_size = image.size();
+    if (im_size.empty()) {
+      RCUTILS_LOG_INFO("[WARN] Could not retrive CV image size");
+    } else if (im_size.height != this->config_.im_height_ || im_size.width != this->config_.im_width_) {
+      RCUTILS_LOG_INFO("[WARN] CV image does not meet expected frame size");
     }
   }
 
@@ -120,7 +133,7 @@ void DroneVisionROS::detectTarget() {
     // Use 32FC1 enconding (float32 single channel)
     unsigned plen = 4;
     unsigned step = this->im_depth_cache_->step;
-    std::vector<uint8_t>& data = this->im_color_cache_->data;
+    std::vector<uint8_t>& data = this->im_depth_cache_->data;
 
     // Target location from YOLO detector is in CV standard, while ROS Image is in C standard
     unsigned loch = target_loc.x();
@@ -147,6 +160,12 @@ void DroneVisionROS::convertToCloud() {
   // unsigned step = this->im_depth_cache_->step;
   std::vector<uint8_t>& data = this->im_color_cache_->data;
 
+  this->cloud_cache_->points.clear();
+  this->cloud_cache_->channels.clear();
+
+  sensor_msgs::msg::ChannelFloat32 channel = sensor_msgs::msg::ChannelFloat32();
+  channel.name = "distance";
+
   for (unsigned i = 0; i < data.size() / plen; i += plen) {
     uint32_t raw = data[i] + (data[i+1] << 8) + (data[i+2] << 16) + (data[i+3] << 24);
     float converted = 0.0f;
@@ -156,7 +175,10 @@ void DroneVisionROS::convertToCloud() {
     geometry_msgs::msg::Point32 point = geometry_msgs::msg::Point32();
 
     this->cloud_cache_->points.push_back(point);
+    channel.values.push_back(converted);
   }
+  this->cloud_cache_->channels.push_back(channel);
+
 }
 
 } // namespace DRONE_NAVIGATION

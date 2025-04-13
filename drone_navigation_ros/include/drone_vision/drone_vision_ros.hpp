@@ -26,8 +26,8 @@ struct DroneVisionNodeConfig {
 
   float thread_hz_ = 10.0f;
 
-  unsigned im_width_  = 0;
-  unsigned im_height_ = 0;
+  unsigned im_width_  = 360;
+  unsigned im_height_ = 640;
 };
 
 class DroneVisionROS : public rclcpp::Node

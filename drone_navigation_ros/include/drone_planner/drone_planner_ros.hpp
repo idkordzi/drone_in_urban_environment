@@ -17,9 +17,9 @@
 namespace DRONE_NAVIGATION {
 
 struct DronePlannerNodeConfig {
-  std::string sub_vision_cloud_    = "/drone/vision/cloud";
-  std::string sub_vision_target_   = "/drone/vision/target";
-  std::string sub_drone_pose_      = "/drone/controller/pose";
+  std::string sub_vision_cloud_   = "/drone/vision/cloud";
+  std::string sub_vision_target_  = "/drone/vision/target";
+  std::string sub_drone_pose_     = "/drone/controller/pose";
   std::string sub_drone_velocity_ = "/drone/controller/velocity";
 
   std::string pub_planner_goal_ = "/drone/planner/goal";

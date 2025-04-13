@@ -13,24 +13,24 @@ FlightControllerROS::FlightControllerROS(rclcpp::NodeOptions options)
 
   this->sub_debug_pose_ = this->create_subscription<geometry_msgs::msg::PoseArray>(
     config_.sub_debug_pose_, 1, std::bind(&FlightControllerROS::poseCallback, this, _1));
-  this->sub_debug_control_ = this->create_subscription<drone_navigation_msgs::msg::ControlVector>(
+  this->sub_debug_control_ = this->create_subscription<drone_navigation_msgs::msg::ControlVectorStamped>(
     config_.sub_debug_control_, 1, std::bind(&FlightControllerROS::controlCallback, this, _1));
   this->sub_drone_goal_ = this->create_subscription<geometry_msgs::msg::Vector3Stamped>(
     config_.sub_drone_goal_, 1, std::bind(&FlightControllerROS::goalCallback, this, _1));
   
-  this->pub_drone_control_ = this->create_publisher<drone_navigation_msgs::msg::ControlVector>(config_.pub_drone_control_, 1);
+  this->pub_drone_control_ = this->create_publisher<drone_navigation_msgs::msg::ControlVectorStamped>(config_.pub_drone_control_, 1);
   this->pub_drone_pose_    = this->create_publisher<geometry_msgs::msg::PoseStamped>(config_.pub_drone_pose_, 1);
   this->pub_drone_vel_     = this->create_publisher<geometry_msgs::msg::TwistStamped>(config_.pub_drone_velocity_, 1);
   // this->pub_drone_acc_     = this->create_publisher<geometry_msgs::msg::AccelStamped>(config_.pub_drone_acceeration_, 1);
 
   this->pose_cache_    = std::make_shared<geometry_msgs::msg::PoseStamped>();
   this->goal_cache_    = std::make_shared<geometry_msgs::msg::Vector3Stamped>();
-  this->control_cache_ = std::make_shared<drone_navigation_msgs::msg::ControlVector>();
+  this->control_cache_ = std::make_shared<drone_navigation_msgs::msg::ControlVectorStamped>();
 
   this->execute_rate_   = std::make_unique<rclcpp::Rate>(config_.thread_hz_);
   this->execute_worker_ = std::thread{&FlightControllerROS::executeThread, this};
 
-  this->msg_control_        = std::make_shared<drone_navigation_msgs::msg::ControlVector>();
+  this->msg_control_        = std::make_shared<drone_navigation_msgs::msg::ControlVectorStamped>();
   this->msg_pose_           = std::make_shared<geometry_msgs::msg::PoseStamped>();
   this->msg_velocity_       = std::make_shared<geometry_msgs::msg::TwistStamped>();
   this->msg_position_debug_ = std::make_shared<geometry_msgs::msg::Vector3>();
@@ -66,12 +66,12 @@ void FlightControllerROS::goalCallback(const geometry_msgs::msg::Vector3Stamped:
   this->goal_cache_->vector = msg->vector;
 }
 
-void FlightControllerROS::controlCallback(const drone_navigation_msgs::msg::ControlVector::ConstSharedPtr &msg) {
+void FlightControllerROS::controlCallback(const drone_navigation_msgs::msg::ControlVectorStamped::ConstSharedPtr &msg) {
   this->control_cache_->header = msg->header;
-  this->control_cache_->fr     = msg->fr;
-  this->control_cache_->fl     = msg->fl;
-  this->control_cache_->rr     = msg->rr;
-  this->control_cache_->rl     = msg->rl;
+  this->control_cache_->control.fr = msg->control.fr;
+  this->control_cache_->control.fl = msg->control.fl;
+  this->control_cache_->control.rr = msg->control.rr;
+  this->control_cache_->control.rl = msg->control.rl;
 }
 
 void FlightControllerROS::publish() {
@@ -125,10 +125,10 @@ void FlightControllerROS::updateContolData() {
   }
   // Use external data
   else {
-    this->msg_control_->fr = this->control_cache_->fr;
-    this->msg_control_->fl = this->control_cache_->fl;
-    this->msg_control_->rr = this->control_cache_->rr;
-    this->msg_control_->rl = this->control_cache_->rl;
+    this->msg_control_->control.fr = this->control_cache_->control.fr;
+    this->msg_control_->control.fl = this->control_cache_->control.fl;
+    this->msg_control_->control.rr = this->control_cache_->control.rr;
+    this->msg_control_->control.rl = this->control_cache_->control.rl;
   }
 }
 
