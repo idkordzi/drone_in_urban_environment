@@ -1,0 +1,54 @@
+/drone_flight_controller_node:
+  ros__parameters:
+    ros_node:
+      subs:
+        debug_pose:    "/gazebo/pose"
+        debug_control: "/drone/debug/control"
+        drone_imu:     "/gazebo/imu"
+        drone_goal:    "/drone/planner/goal"
+      pubs:
+        drone_control:      "/drone/controller/control"
+        drone_pose:         "/drone/controller/pose"
+        drone_velocity:     "/drone/controller/velocity"
+        drone_acceleration: "/drone/controller/acceleration"
+      gz_model_idx: 1
+      thread_freq: 100.0
+      en_control_int: true
+      en_state_int: false
+    
+    udp_socket:
+      address: "127.0.0.1"
+      port: 9002
+      magic: 18458
+
+    flight_controller:
+      hover_cmd: [ # fr, fl, rr, rl
+        1534.0,
+        1534.0,
+        1534.0,
+        1534.0
+      ] 
+      pid_mov_z: [ # P, I, D
+        20.000,
+         0.000,
+        10.000
+      ]
+      pid_rot_x: [
+        20.000,
+         0.000,
+        25.000
+      ]
+      pid_rot_y: [
+        20.000,
+         0.000,
+        25.000
+      ]
+      pid_rot_z: [
+        20.0,
+         0.0,
+        20.0
+      ]
+      pid_lim: [-450.0, 450.0] # pid min/max output
+      yaw_off_pos_margin: 0.1
+
+    # state_estimator:

@@ -46,6 +46,9 @@ find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(rclcpp_components REQUIRED)
 
+find_package(tf2 REQUIRED)
+find_package(tf2_geometry_msgs REQUIRED)
+
 find_package(std_msgs REQUIRED)
 find_package(geometry_msgs REQUIRED)
 find_package(sensor_msgs REQUIRED)
@@ -84,11 +87,13 @@ ament_target_dependencies(${TargetDroneVisionROS}
 target_include_directories(${TargetDroneVisionROS} 
   PUBLIC 
     ${OpenCV_INCLUDE_DIRS} 
+    ${cv_bridge_INCLUDE_DIRS} 
     ${CMAKE_CURRENT_SOURCE_DIR}/include/drone_vision 
 )
 target_link_libraries(${TargetDroneVisionROS} 
   PUBLIC 
     ${OpenCV_LIBS} 
+    ${cv_bridge_LIBS} 
     drone_camera_wrapper 
     drone_yolo_wrapper 
 )
@@ -104,16 +109,21 @@ ament_target_dependencies(${TargetDronePlannerROS}
   PUBLIC 
     rclcpp 
     rclcpp_components 
+    std_msgs 
     geometry_msgs 
     sensor_msgs 
+    cv_bridge 
 )
 target_include_directories(${TargetDronePlannerROS} 
   PUBLIC 
+    ${OpenCV_INCLUDE_DIRS} 
     ${EIGEN_LIB_ROOT_PATH} 
     ${CMAKE_CURRENT_SOURCE_DIR}/include/drone_planner 
 )
 target_link_libraries(${TargetDronePlannerROS} 
   PUBLIC 
+    ${OpenCV_LIBS} 
+    ${cv_bridge_LIBS} 
     drone_vfh_planner 
 )
 
@@ -128,7 +138,10 @@ ament_target_dependencies(${TargetFlightControllerROS}
   PUBLIC 
     rclcpp 
     rclcpp_components 
+    tf2 
+    tf2_geometry_msgs 
     geometry_msgs 
+    sensor_msgs 
     drone_navigation_msgs 
 )
 target_include_directories(${TargetFlightControllerROS} 
@@ -140,6 +153,7 @@ target_link_libraries(${TargetFlightControllerROS}
   PUBLIC 
     drone_flight_controller 
     drone_state_estimator 
+    drone_socket_udp 
 )
 
 # Add test class node

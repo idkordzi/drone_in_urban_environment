@@ -1,0 +1,23 @@
+/drone_vision_node:
+  ros__parameters:
+    ros_node:
+      subs:
+        camera_color: "/gazebo/camera/color"
+        camera_depth: "/gazebo/camera/depth"
+        camera_cloud: "/gazebo/camera/points"
+      pubs:
+        vision_target: "/drone/vision/target"
+        vision_cloud: "/drone/vision/cloud"
+      thread_freq: 10.0
+      im_width: 640
+      im_height: 360
+      use_ext_camera: true
+      mean_circ_radi: 3 # [px]
+
+    # camera_wrapper:
+
+    yolo_wrapper:
+      yolo_cls_idx: 2
+      yolo_min_conf: 0.6
+      yolo_model_path: "install/drone_navigation_ros/share/drone_navigation/yolo/models/yolo11n.onnx"
+      yolo_labels_path: "install/drone_navigation_ros/share/drone_navigation/yolo/labels/coco.names"

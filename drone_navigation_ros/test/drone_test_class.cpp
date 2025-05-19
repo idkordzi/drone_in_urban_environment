@@ -44,7 +44,7 @@ protected:
   std::unique_ptr<rclcpp::Rate> execute_rate_;
   std::thread execute_worker_;
 
-  std::vector<uint16_t> ctrl_ {1100, 1100, 1100, 1100}; // fr: 1563.0, fl: 1566.0, rr: 1560.0, rl: 1562.0
+  std::vector<uint16_t> ctrl_ {0, 0, 0, 0};
 
   char address_[10] {"127.0.0.1"};
   uint16_t port_ {9002};
@@ -54,11 +54,11 @@ protected:
   uint32_t frame_count_ {0};
 
   void testControl(const drone_navigation_msgs::msg::ControlVector::ConstSharedPtr& msg) {
-    this->ctrl_[0] = (uint16_t)(msg->rl); // rear-left
-    this->ctrl_[1] = (uint16_t)(msg->fr); // front-right
-    this->ctrl_[2] = (uint16_t)(msg->rr); // rear-right
-    this->ctrl_[3] = (uint16_t)(msg->fl); // front-left
-    RCUTILS_LOG_INFO("[INFO] Received cmd: {fl: %d, fr: %d, rl: %d, rr: %d}", this->ctrl_[3], this->ctrl_[1], this->ctrl_[0], this->ctrl_[2]);
+    this->ctrl_[0] = (uint16_t)(msg->fr); // front-right
+    this->ctrl_[1] = (uint16_t)(msg->rl); // rear-left
+    this->ctrl_[2] = (uint16_t)(msg->fl); // front-left
+    this->ctrl_[3] = (uint16_t)(msg->rr); // rear-right
+    // RCUTILS_LOG_INFO("[INFO] Received cmd: {fl: %d, fr: %d, rl: %d, rr: %d}", this->ctrl_[2], this->ctrl_[0], this->ctrl_[1], this->ctrl_[3]);
   }
 
   void executeThread() {
@@ -66,10 +66,16 @@ protected:
       
       servo_packet_16 pkt;
 
+      // rotors control (fr/rl/fl/rr rotor), ctrl (1100, 1900)
       pkt.pwm[0] = this->ctrl_[0];
       pkt.pwm[1] = this->ctrl_[1];
       pkt.pwm[2] = this->ctrl_[2];
       pkt.pwm[3] = this->ctrl_[3];
+
+      // gimbl setting (camera roll/pitch/yaw), ctrl (1100, 1900)
+      pkt.pwm[8]  = 1500; // (-30, 30) [deg], 0 in 1500
+      pkt.pwm[9]  = 1700; // (-135, 45) [deg], 0 in 1700
+      pkt.pwm[10] = 1500; // (-160, 160) [deg], 0 in 1500
 
       pkt.magic = this->magic_number_;
       pkt.frame_rate  = this->frame_rate_;

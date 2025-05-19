@@ -1,0 +1,33 @@
+/drone_planner_node:
+  ros__parameters:
+    ros_node:
+      subs:
+        vision_cloud:   "/drone/vision/cloud"
+        vision_target:  "/drone/vision/target"
+        drone_pose:     "/drone/controller/pose"
+        drone_velocity: "/drone/controller/velocity"
+      pubs:
+        planner_goal: "/drone/planner/goal"
+        planner_cost_image: "/drone/planner/cost_image"
+      thread_freq: 10.0
+    
+    planner:
+      skip_planning: false
+
+      sensor_min_range: 0.2  # [m]
+      sensor_max_range: 12.0 # [m]
+
+      camera_fov_h: 86.0 # [deg]
+      camera_fov_v: 58.0 # [deg]
+
+      histogram_alpha: 6 # [deg]
+      point_max_age: 5.0 # [s]
+
+      goal_dev_margin: 0.2 # [m]
+
+      goal_min_dist: 5.0 # [m]
+      goal_min_alt_diff: 1.0 # [m]
+
+      max_candidates_per_it: 3
+      drone_pos_margin: 0.2 # [m]
+      planning_step: 1.0 # [m]
