@@ -1,0 +1,135 @@
+<?xml version="1.0"?>
+<sdf version="1.9">
+
+  <world name="town_small">
+    <physics name="1ms" type="ignore">
+      <max_step_size>0.005</max_step_size>
+      <real_time_factor>1.0</real_time_factor>
+      <real_time_update_rate>0</real_time_update_rate>
+    </physics>
+
+    <plugin filename="gz-sim-physics-system"
+      name="gz::sim::systems::Physics">
+    </plugin>
+    <plugin filename="gz-sim-user-commands-system"
+      name="gz::sim::systems::UserCommands">
+    </plugin>
+    <plugin filename="gz-sim-scene-broadcaster-system"
+      name="gz::sim::systems::SceneBroadcaster">
+    </plugin>
+    <plugin
+      filename="gz-sim-sensors-system"
+      name="gz::sim::systems::Sensors">
+      <render_engine>ogre2</render_engine>
+    </plugin>
+    <plugin filename="gz-sim-imu-system"
+      name="gz::sim::systems::Imu">
+    </plugin>
+
+    <scene>
+      <ambient>1.0 1.0 1.0</ambient>
+      <background>0.8 0.8 0.8</background>
+      <sky></sky>
+    </scene>
+
+    <light type="directional" name="sun">
+      <cast_shadows>true</cast_shadows>
+      <pose>0 0 10 0 0 0</pose>
+      <diffuse>0.8 0.8 0.8 1</diffuse>
+      <specular>0.8 0.8 0.8 1</specular>
+      <attenuation>
+        <range>1000</range>
+        <constant>0.9</constant>
+        <linear>0.01</linear>
+        <quadratic>0.001</quadratic>
+      </attenuation>
+      <direction>-0.5 0.1 -0.9</direction>
+    </light>
+    
+    <include>
+      <uri>model://airfield</uri>
+      <pose degrees="true">0 0 0 0 0 0</pose>
+    </include>
+
+    <!-- Roads -->
+    <include>
+      <uri>model://asphalt_road</uri>
+      <name>road_1</name>
+      <pose>-10 0 0 0 0 0</pose>
+    </include>
+
+    <include>
+      <uri>model://asphalt_road</uri>
+      <name>road_2</name>
+      <pose>10 0 0 0 0 0</pose>
+    </include>
+
+    <include>
+      <uri>model://asphalt_road</uri>
+      <name>road_3</name>
+      <pose>10 10 0 0 0 1.57</pose>
+    </include>
+
+    <include>
+      <uri>model://asphalt_road</uri>      
+      <name>road_4</name>
+      <pose>10 -10 0 0 0 1.57</pose>
+    </include>
+
+
+    <!-- Drone -->
+    <include>
+      <uri>model://iris_with_camera</uri>
+      <pose degrees="true">0 -2 0.245 0 0 0</pose>
+    </include>
+
+    <!-- Vehicles -->
+    <include>
+      <uri>model://pickup</uri>
+      <pose degrees="true">5 -2 0.05 0 0 0</pose>
+    </include>
+    
+    <!-- Buildings -->
+    <include>
+      <uri>model://fast_food</uri>
+      <pose degrees="true">-6 16 0 0 0 0</pose>
+    </include>
+
+    <!-- <include>
+      <uri>model://gas_station</uri>
+      <pose degrees="true">0 0 0 0 0 0</pose>
+    </include> -->
+
+    <!-- <include>
+      <uri>model://grocery_store</uri>
+      <pose degrees="true">0 0 0 0 0 0</pose>
+    </include> -->
+
+    <!-- <include>
+      <uri>model://house_1</uri>
+      <pose degrees="true">0 0 0 0 0 0</pose>
+    </include> -->
+
+    <!-- <include>
+      <uri>model://playground</uri>
+      <pose degrees="true">0 0 0 0 0 0</pose>
+    </include> -->
+
+    <!-- <include>
+      <uri>model://school</uri>
+      <pose degrees="true">0 0 0 0 0 0</pose>
+    </include> -->
+
+    <!-- <include>
+      <uri>model://police_station</uri>
+      <pose degrees="true">0 0 0 0 0 0</pose>
+    </include> -->
+
+    <!-- <include>
+      <uri>model://post_office</uri>
+      <pose degrees="true">0 0 0 0 0 0</pose>
+    </include> -->
+
+  </world>
+
+</sdf>

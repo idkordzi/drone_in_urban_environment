@@ -1,10 +1,11 @@
 <?xml version="1.0"?>
 <sdf version="1.9">
 
-  <world name="test_world">
+  <world name="world_test">
     <physics name="1ms" type="ignore">
-      <max_step_size>0.001</max_step_size>
+      <max_step_size>0.002</max_step_size>
       <real_time_factor>1.0</real_time_factor>
+      <real_time_update_rate>0</real_time_update_rate>
     </physics>
 
     <plugin filename="gz-sim-physics-system"
@@ -46,13 +47,20 @@
     </light>
     
     <include>
-      <uri>model://runway</uri>
-      <pose degrees="true">-29 545 0 0 0 363</pose>
+      <uri>model://airfield</uri>
+      <pose degrees="true">0 0 0 0 0 0</pose>
     </include>
 
+    <!-- Drone -->
     <include>
       <uri>model://iris_with_camera</uri>
-      <pose degrees="true">0 0 0.195 0 0 90</pose>
+      <pose degrees="true">0 0 0.195 0 0 0</pose>
+    </include>
+
+    <!-- Vehicle -->
+    <include>
+      <uri>model://pickup</uri>
+      <pose degrees="true">10 0 0 0 0 90.0</pose>
     </include>
 
   </world>

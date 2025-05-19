@@ -51,15 +51,34 @@ find_package(drone_navigation_ros REQUIRED)
 
 # Add gazebo models (Ardupilot)
 add_subdirectory(modules/ardupilot_gazebo)
+# add_subdirectory(modules/gazebo_models)
+# add_subdirectory(modules/gazebo_models_worlds_collection)
 
 # ################################################################
 # Build model plugins
 # ################################################################
 
+add_library(RotorControlPlugin
+  SHARED
+    plugins/RotorControlPlugin.cc
+    plugins/RotorControlPlugin.hh
+    plugins/SocketUDP.cc
+    plugins/SocketUDP.hh
+)
+target_link_libraries(RotorControlPlugin PRIVATE
+  gz-common${GZ_COMMON_VER}::gz-common${GZ_COMMON_VER}
+  gz-sim${GZ_SIM_VER}::gz-sim${GZ_SIM_VER}
+)
 
 # ################################################################
 # Install files
 # ################################################################
+
+install(
+  TARGETS
+  RotorControlPlugin
+  DESTINATION lib/${PROJECT_NAME}
+)
 
 install(
   DIRECTORY

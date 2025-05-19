@@ -1,5 +1,5 @@
 - ros_topic_name: "/gazebo/pose"
-  gz_topic_name: "/world/test_world/pose/info"
+  gz_topic_name: "/world/world_test/pose/info"
   ros_type_name: "geometry_msgs/msg/PoseArray"
   gz_type_name: "gz.msgs.Pose_V"
   direction: GZ_TO_ROS
@@ -7,7 +7,7 @@
   lazy: false
 
 - ros_topic_name: "/gazebo/imu"
-  gz_topic_name: "/world/test_world/model/iris_with_camera/model/iris_with_standoffs/link/imu_link/sensor/imu_sensor/imu"
+  gz_topic_name: "/world/world_test/model/iris_with_camera/model/iris_with_standoffs/link/imu_link/sensor/imu_sensor/imu"
   ros_type_name: "sensor_msgs/msg/Imu"
   gz_type_name: "gz.msgs.IMU"
   direction: GZ_TO_ROS
@@ -15,7 +15,7 @@
   lazy: false
 
 - ros_topic_name: "/gazebo/camera/color"
-  gz_topic_name: "/world/test_world/model/iris_with_camera/model/gimbal/link/pitch_link/sensor/rs_front/image"
+  gz_topic_name: "/world/world_test/model/iris_with_camera/link/camera_link/sensor/rs_front/image"
   ros_type_name: "sensor_msgs/msg/Image"
   gz_type_name: "gz.msgs.Image"
   direction: GZ_TO_ROS
@@ -23,7 +23,7 @@
   lazy: false
 
 - ros_topic_name: "/gazebo/camera/depth"
-  gz_topic_name: "/world/test_world/model/iris_with_camera/model/gimbal/link/pitch_link/sensor/rs_front/depth_image"
+  gz_topic_name: "/world/world_test/model/iris_with_camera/link/camera_link/sensor/rs_front/depth_image"
   ros_type_name: "sensor_msgs/msg/Image"
   gz_type_name: "gz.msgs.Image"
   direction: GZ_TO_ROS
@@ -31,7 +31,7 @@
   lazy: false
 
 - ros_topic_name: "/gazebo/camera/points"
-  gz_topic_name: "/world/test_world/model/iris_with_camera/model/gimbal/link/pitch_link/sensor/rs_front/points"
+  gz_topic_name: "/world/world_test/model/iris_with_camera/link/camera_link/sensor/rs_front/points"
   ros_type_name: "sensor_msgs/msg/PointCloud2"
   gz_type_name: "gz.msgs.PointCloudPacked"
   direction: GZ_TO_ROS
