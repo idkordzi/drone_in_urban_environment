@@ -1,10 +1,15 @@
 cmake_minimum_required(VERSION 3.15)
 project(drone_navigation_ros VERSION 1.0.0)
 
+if (NOT DEFINED CMAKE_CUDA_ARCHITECTURES)
+  set(CMAKE_CUDA_ARCHITECTURES 86)
+endif()
+
 if(NOT CMAKE_CXX_STANDARD)
   set(CMAKE_CXX_STANDARD 17)
   set(CMAKE_CXX_STANDARD_REQUIRED ON)
 endif()
+enable_language(CUDA)
 
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   add_compile_options(-Wall -Wextra -Wpedantic)
@@ -19,12 +24,14 @@ if(NOT DEFINED EIGEN_LIB_ROOT_PATH)
   include(FetchContent)
   set(EIGEN_LIB_ROOT_PATH "${CMAKE_CURRENT_BINARY_DIR}/_deps/lib_eigen_src")
   message("Eigen library root path set to ${EIGEN_LIB_ROOT_PATH}")
-  FetchContent_Declare(
-    lib-eigen
-    GIT_REPOSITORY https://gitlab.com/libeigen/eigen.git
-    GIT_TAG 3.4.0
-    SOURCE_DIR "${EIGEN_LIB_ROOT_PATH}")
-  FetchContent_Populate(lib-eigen)
+  if (NOT EXISTS ${EIGEN_LIB_ROOT_PATH})
+    FetchContent_Declare(
+      lib-eigen
+      GIT_REPOSITORY https://gitlab.com/libeigen/eigen.git
+      GIT_TAG 3.4.0
+      SOURCE_DIR "${EIGEN_LIB_ROOT_PATH}")
+    FetchContent_Populate(lib-eigen)
+  endif()
 endif()
 
 # # Download OpenCV library

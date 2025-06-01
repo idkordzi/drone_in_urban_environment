@@ -22,6 +22,8 @@ FlightControllerROS::~FlightControllerROS() {
 
 void FlightControllerROS::poseCallback(const geometry_msgs::msg::PoseArray::ConstSharedPtr &msg) {
 
+  std::lock_guard<std::mutex> lg(this->mtx_pose_);
+
   float dt = (rclcpp::Duration(msg->header.stamp.sec, msg->header.stamp.nanosec) - 
               rclcpp::Duration(this->pose_cache_->header.stamp.sec, this->pose_cache_->header.stamp.nanosec)).seconds();
 
@@ -37,6 +39,9 @@ void FlightControllerROS::poseCallback(const geometry_msgs::msg::PoseArray::Cons
 }
 
 void FlightControllerROS::controlCallback(const drone_navigation_msgs::msg::ControlVector::ConstSharedPtr &msg) {
+
+  std::lock_guard<std::mutex> lg(this->mtx_ctrl_);
+
   this->control_cache_->fr = msg->fr;
   this->control_cache_->fl = msg->fl;
   this->control_cache_->rr = msg->rr;
@@ -44,6 +49,9 @@ void FlightControllerROS::controlCallback(const drone_navigation_msgs::msg::Cont
 }
 
 void FlightControllerROS::imuCallback(const sensor_msgs::msg::Imu::ConstSharedPtr &msg) {
+
+  std::lock_guard<std::mutex> lg(this->mtx_imu_);
+
   this->imu_cache_->header = msg->header;
   this->imu_cache_->orientation = msg->orientation;
   this->imu_cache_->angular_velocity = msg->angular_velocity;
@@ -54,6 +62,9 @@ void FlightControllerROS::imuCallback(const sensor_msgs::msg::Imu::ConstSharedPt
 }
 
 void FlightControllerROS::goalCallback(const geometry_msgs::msg::Vector3Stamped::ConstSharedPtr &msg) {
+
+  std::lock_guard<std::mutex> lg(this->mtx_goal_);
+
   this->goal_cache_->header = msg->header;
   this->goal_cache_->vector = msg->vector;
 }
@@ -95,6 +106,8 @@ void FlightControllerROS::updateDroneState() {
   }
   // Use measurements from simulator
   else {
+    std::lock_guard<std::mutex> lg_pose(this->mtx_pose_);
+    std::lock_guard<std::mutex> lg_imu(this->mtx_imu_);
 
     this->msg_pose_->pose = this->pose_cache_->pose;
     this->msg_velocity_->twist.linear =  this->velocity_cache_->twist.linear;
@@ -106,6 +119,7 @@ void FlightControllerROS::updateContolData() {
 
   // Use controller
   if (this->config_.use_control_internal) {
+    std::lock_guard<std::mutex> lg(this->mtx_goal_);
 
     Eigen::Vector3f g_position = Eigen::Vector3f(this->goal_cache_->vector.x, this->goal_cache_->vector.y, this->goal_cache_->vector.z);
     Eigen::Vector3f c_position = Eigen::Vector3f(this->msg_pose_->pose.position.x, this->msg_pose_->pose.position.y, this->msg_pose_->pose.position.z);
@@ -142,6 +156,8 @@ void FlightControllerROS::updateContolData() {
   }
   // Use external data
   else {
+    std::lock_guard<std::mutex> lg(this->mtx_ctrl_);
+
     this->msg_control_->control.fr = this->control_cache_->fr;
     this->msg_control_->control.fl = this->control_cache_->fl;
     this->msg_control_->control.rr = this->control_cache_->rr;
@@ -203,6 +219,8 @@ void FlightControllerROS::declareRosParameters() {
   this->declare_parameter("flight_controller.pid_rot_y", rclcpp::PARAMETER_DOUBLE_ARRAY);
   this->declare_parameter("flight_controller.pid_rot_z", rclcpp::PARAMETER_DOUBLE_ARRAY);
   this->declare_parameter("flight_controller.pid_lim", rclcpp::PARAMETER_DOUBLE_ARRAY);
+  this->declare_parameter("flight_controller.ang_x_lim", rclcpp::PARAMETER_DOUBLE);
+  this->declare_parameter("flight_controller.ang_y_lim", rclcpp::PARAMETER_DOUBLE);
   this->declare_parameter("flight_controller.yaw_off_pos_margin", rclcpp::PARAMETER_DOUBLE);
 
   // state estimator
@@ -239,7 +257,6 @@ void FlightControllerROS::initializeComponents() {
   std::vector<double> pid_rot_y = this->get_parameter("flight_controller.pid_rot_y").as_double_array();
   std::vector<double> pid_rot_z = this->get_parameter("flight_controller.pid_rot_z").as_double_array();
   std::vector<double> pid_lim   = this->get_parameter("flight_controller.pid_lim").as_double_array();
-  float yaw_off_pos_margin = this->get_parameter("flight_controller.yaw_off_pos_margin").as_double();
 
   FlightControllerConfig flight_controller_config = {};
   flight_controller_config.hover_ctrl_fr = hover_cmd[0];
@@ -266,7 +283,9 @@ void FlightControllerROS::initializeComponents() {
   flight_controller_config.pid_min = pid_lim[0];
   flight_controller_config.pid_max = pid_lim[1];
 
-  flight_controller_config.yaw_off_pos_margin = yaw_off_pos_margin;
+  flight_controller_config.ang_x_lim = this->get_parameter("flight_controller.ang_x_lim").as_double();
+  flight_controller_config.ang_y_lim = this->get_parameter("flight_controller.ang_y_lim").as_double();
+  flight_controller_config.yaw_off_pos_margin = this->get_parameter("flight_controller.yaw_off_pos_margin").as_double();
 
   // state estimator
   StateEstimatorConfig state_estimator_config = {};
@@ -344,7 +363,7 @@ void FlightControllerROS::initializePublishers() {
 
 void FlightControllerROS::initializeExecutionThread() {
   this->execute_rate_   = std::make_unique<rclcpp::Rate>(this->config_.thread_hz);
-  this->execute_worker_ = std::thread{&FlightControllerROS::executeThread, this};
+  this->execute_worker_ = std::thread(&FlightControllerROS::executeThread, this);
 }
 
 } // namespace DRONE_NAVIGATION

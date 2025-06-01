@@ -93,14 +93,12 @@ void DroneVisionROS::executeThread() {
   while (rclcpp::ok()) {
     
     if (this->im_color_ready_ && this->im_depth_ready_ && this->pt_cloud_ready_) {
-      std::lock_guard<std::mutex> lg_color(this->mtx_im_color_);
-      std::lock_guard<std::mutex> lg_depth(this->mtx_im_depth_);
-      std::lock_guard<std::mutex> lg_cloud(this->mtx_pt_cloud_);
 
       if (this->config_.use_ext_camera)
         this->getDataFromSimulation();
       else
         this->getDataFromCamera();
+      
       this->detectTarget();
       this->publish();
   
@@ -113,6 +111,11 @@ void DroneVisionROS::executeThread() {
 }
 
 void DroneVisionROS::getDataFromSimulation() {
+
+  std::lock_guard<std::mutex> lg_color(this->mtx_im_color_);
+  std::lock_guard<std::mutex> lg_depth(this->mtx_im_depth_);
+  std::lock_guard<std::mutex> lg_cloud(this->mtx_pt_cloud_);
+
   if (!this->config_.use_ext_camera) return;
 
   this->cv_ptr_ = cv_bridge::toCvCopy(*(this->im_color_cache_));
@@ -234,6 +237,7 @@ void DroneVisionROS::declareRosParameters() {
   // ...
 
   // yolo wrapper
+  this->declare_parameter("yolo_wrapper.en_cuda", rclcpp::PARAMETER_BOOL);
   this->declare_parameter("yolo_wrapper.yolo_cls_idx", rclcpp::PARAMETER_INTEGER);
   this->declare_parameter("yolo_wrapper.yolo_min_conf", rclcpp::PARAMETER_DOUBLE);
   this->declare_parameter("yolo_wrapper.yolo_model_path", rclcpp::PARAMETER_STRING);
@@ -271,6 +275,7 @@ void DroneVisionROS::initializeComponents() {
   YOLOWrapperConfig yolo_wrapper_config = {};
   yolo_wrapper_config.yolo_in_width = (unsigned)(this->config_.im_width);
   yolo_wrapper_config.yolo_in_height = (unsigned)(this->config_.im_height);
+  yolo_wrapper_config.en_cuda = this->get_parameter("yolo_wrapper.en_cuda").as_bool();
   yolo_wrapper_config.yolo_class = this->get_parameter("yolo_wrapper.yolo_cls_idx").as_int();
   yolo_wrapper_config.yolo_min_conf = (float)(this->get_parameter("yolo_wrapper.yolo_min_conf").as_double());
   yolo_wrapper_config.model_path  = this->get_parameter("yolo_wrapper.yolo_model_path").as_string();
@@ -332,7 +337,7 @@ void DroneVisionROS::initializePublishers() {
 
 void DroneVisionROS::initializeExecutionThread() {
   this->execute_rate_   = std::make_unique<rclcpp::Rate>(this->config_.thread_hz);
-  this->execute_worker_ = std::thread{&DroneVisionROS::executeThread, this};
+  this->execute_worker_ = std::thread(&DroneVisionROS::executeThread, this);
 }
 
 } // namespace DRONE_NAVIGATION

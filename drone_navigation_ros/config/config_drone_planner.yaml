@@ -8,10 +8,12 @@
         drone_velocity: "/drone/controller/velocity"
       pubs:
         planner_goal: "/drone/planner/goal"
-        planner_cost_image: "/drone/planner/cost_image"
-      thread_freq: 10.0
+        planner_hist_image: "/drone/planner/image/hist"
+        planner_cost_image: "/drone/planner/image/cost"
+      thread_freq: 30.0
     
     planner:
+      en_cuda: true
       skip_planning: false
 
       sensor_min_range: 0.2  # [m]
@@ -20,14 +22,22 @@
       camera_fov_h: 86.0 # [deg]
       camera_fov_v: 58.0 # [deg]
 
-      histogram_alpha: 6 # [deg]
+      histogram_alpha: 3 # [deg]
       point_max_age: 5.0 # [s]
 
       goal_dev_margin: 0.2 # [m]
 
-      goal_min_dist: 5.0 # [m]
+      goal_min_dist: 4.0 # [m]
       goal_min_alt_diff: 1.0 # [m]
 
       max_candidates_per_it: 3
       drone_pos_margin: 0.2 # [m]
-      planning_step: 1.0 # [m]
+      planning_step: 0.5 # [m]
+
+      # cost params
+      yaw_cost_param: 0.5
+      pitch_block_distance: 6.0
+      pitch_cost_param: 3.0
+      velocity_cost_param: 1.5
+      obstacle_min_distance: 2.0
+      obstacle_cost_param: 5000.0

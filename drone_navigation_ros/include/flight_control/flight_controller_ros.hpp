@@ -3,6 +3,7 @@
 #include <string>
 #include <vector>
 #include <thread>
+#include <mutex>
 #include <memory>
 
 #include "Eigen/Dense"
@@ -129,6 +130,11 @@ private:
   // execution thread
   std::unique_ptr<rclcpp::Rate> execute_rate_;
   std::thread execute_worker_;
+
+  std::mutex mtx_pose_ = {};
+  std::mutex mtx_imu_  = {};
+  std::mutex mtx_goal_ = {};
+  std::mutex mtx_ctrl_ = {};
 
   // UDP socket 
   uint32_t frame_count_ {0};

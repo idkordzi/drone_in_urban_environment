@@ -32,6 +32,7 @@ struct DronePlannerNodeConfig {
   std::string sub_drone_velocity = "/drone/controller/velocity";
 
   std::string pub_planner_goal = "/drone/planner/goal";
+  std::string pub_planner_hist_image = "/drone/planner/hist_image";
   std::string pub_planner_cost_image = "/drone/planner/cost_image";
 
   float thread_hz = 30.0f;
@@ -68,7 +69,7 @@ private:
   void updatePlanner();
   void runPlanner();
 
-  void getCostImage();
+  void getDebugImage();
 
   DronePlannerNodeConfig config_ = {};
 
@@ -87,10 +88,12 @@ private:
   rclcpp::Subscription<geometry_msgs::msg::TwistStamped>::SharedPtr   sub_drone_velocity_;
 
   // publishers msg cache
+  sensor_msgs::msg::Image msg_hist_image_;
   sensor_msgs::msg::Image msg_cost_image_;
 
   // publishers
   rclcpp::Publisher<geometry_msgs::msg::Vector3Stamped>::SharedPtr pub_planner_goal_;
+  rclcpp::Publisher<sensor_msgs::msg::Image>::SharedPtr pub_planner_hist_image_;
   rclcpp::Publisher<sensor_msgs::msg::Image>::SharedPtr pub_planner_cost_image_;
 
   // execution thread
