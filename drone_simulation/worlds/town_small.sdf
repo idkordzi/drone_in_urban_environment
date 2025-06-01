@@ -90,10 +90,10 @@
     </include>
     
     <!-- Buildings -->
-    <include>
+    <!-- <include>
       <uri>model://fast_food</uri>
       <pose degrees="true">-6 16 0 0 0 0</pose>
-    </include>
+    </include> -->
 
     <!-- <include>
       <uri>model://gas_station</uri>

@@ -13,6 +13,9 @@
   <depend>rclcpp</depend>
   <depend>rclcpp_components</depend>
 
+  <depend>tf2</depend>
+
+  <depend>geometry_msgs</depend>
   <depend>sensor_msgs</depend>
 
   <depend>gz-cmake3</depend>

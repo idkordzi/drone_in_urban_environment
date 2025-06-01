@@ -39,6 +39,14 @@ def generate_launch_description():
     config_file=os.path.join(sim_config_dir, 'config_gazebo_bridge.yaml'),
   )
   
+  node_pickup_cmd = Node(
+    package='drone_simulation',
+    namespace='',
+    executable='pickup_pose_cmd_node',
+    name='pickup_pose_cmd_node',
+    parameters=[os.path.join(sim_config_dir, 'config_vehicle_pose_cmd.yaml')]
+  )
+  
   node_vision = Node(
     package='drone_navigation_ros',
     namespace='',
@@ -63,18 +71,20 @@ def generate_launch_description():
     parameters=[os.path.join(nav_config_dir, 'config_flight_controller.yaml')]
   )
   
-  # node_drone_test = Node(
-  #   package='drone_navigation_ros',
-  #   namespace='',
-  #   executable='drone_test_node',
-  #   name='drone_test_node'
-  # )
+  node_drone_test = Node(
+    package='drone_navigation_ros',
+    namespace='',
+    executable='drone_test_node',
+    name='drone_test_node'
+  )
 
   ld = LaunchDescription()
 
   ld.add_action(gzserver_cmd)
   ld.add_action(gzclient_cmd)
   ld.add_action(ros_gz_bridge)
+  ld.add_action(node_pickup_cmd)
+  
   ld.add_action(node_vision)
   ld.add_action(node_planner)
   ld.add_action(node_flight_controller)

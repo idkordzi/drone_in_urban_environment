@@ -1,4 +1,4 @@
-#include "RotorControlPlugin.hh"
+#include "DroneRotorControl.hh"
 
 GZ_ADD_PLUGIN(gz::sim::systems::ArduPilotPlugin,
               gz::sim::System,
@@ -6,7 +6,7 @@ GZ_ADD_PLUGIN(gz::sim::systems::ArduPilotPlugin,
               gz::sim::systems::ArduPilotPlugin::ISystemPostUpdate,
               gz::sim::systems::ArduPilotPlugin::ISystemReset,
               gz::sim::systems::ArduPilotPlugin::ISystemPreUpdate)
-GZ_ADD_PLUGIN_ALIAS(gz::sim::systems::ArduPilotPlugin, "RotorControlPlugin")
+GZ_ADD_PLUGIN_ALIAS(gz::sim::systems::ArduPilotPlugin, "DroneRotorControl")
 
 namespace gz {
 namespace sim {

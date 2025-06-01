@@ -1,0 +1,11 @@
+/pickup_pose_cmd_node:
+  ros__parameters:
+    ros_node:
+      subs:
+        pickup_pose_cmd:   "/debug/pickup/cmd_pose"
+      pubs:
+        pickup_pose_cmd: "/model/pickup/cmd_pose"
+      thread_freq: 50.0
+      en_input: false
+      path_pub_period: 5.0 # [s]
+      path_file: "install/drone_simulation/share/drone_simulation/sim_files/path01.txt"

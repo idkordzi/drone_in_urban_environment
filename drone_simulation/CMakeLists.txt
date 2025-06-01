@@ -38,6 +38,8 @@ endif()
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(rclcpp_components REQUIRED)
+find_package(tf2 REQUIRED)
+find_package(geometry_msgs REQUIRED)
 find_package(sensor_msgs REQUIRED)
 
 find_package(ros_gz_bridge REQUIRED)
@@ -58,16 +60,44 @@ add_subdirectory(modules/ardupilot_gazebo)
 # Build model plugins
 # ################################################################
 
-add_library(RotorControlPlugin
+add_library(drone-rotor-control
   SHARED
-    plugins/RotorControlPlugin.cc
-    plugins/RotorControlPlugin.hh
+    plugins/DroneRotorControl.cc
+    plugins/DroneRotorControl.hh
     plugins/SocketUDP.cc
     plugins/SocketUDP.hh
 )
-target_link_libraries(RotorControlPlugin PRIVATE
+target_link_libraries(drone-rotor-control PRIVATE
   gz-common${GZ_COMMON_VER}::gz-common${GZ_COMMON_VER}
   gz-sim${GZ_SIM_VER}::gz-sim${GZ_SIM_VER}
+)
+
+add_library(drive-to-pose-controller
+  SHARED
+    plugins/DriveToPoseController.cc
+    plugins/DriveToPoseController.hh
+)
+target_link_libraries(drive-to-pose-controller PRIVATE
+  gz-common${GZ_COMMON_VER}::gz-common${GZ_COMMON_VER}
+  gz-sim${GZ_SIM_VER}::gz-sim${GZ_SIM_VER}
+)
+
+# ################################################################
+# Build ros nodes
+# ################################################################
+
+set(TargetPickupPoseCmd pickup_pose_cmd_node)
+add_executable(${TargetPickupPoseCmd} 
+  ${CMAKE_CURRENT_SOURCE_DIR}/nodes/vehicle_pose_cmd_ros_exec.cpp 
+  ${CMAKE_CURRENT_SOURCE_DIR}/nodes/vehicle_pose_cmd_ros.cpp 
+)
+target_compile_features(${TargetPickupPoseCmd} PUBLIC cxx_std_17)
+ament_target_dependencies(${TargetPickupPoseCmd} 
+  PUBLIC 
+    rclcpp 
+    rclcpp_components 
+    tf2 
+    geometry_msgs 
 )
 
 # ################################################################
@@ -76,7 +106,9 @@ target_link_libraries(RotorControlPlugin PRIVATE
 
 install(
   TARGETS
-  RotorControlPlugin
+  drone-rotor-control
+  drive-to-pose-controller
+  ${TargetPickupPoseCmd}
   DESTINATION lib/${PROJECT_NAME}
 )
 
@@ -102,6 +134,12 @@ install(
   DIRECTORY
   worlds/
   DESTINATION share/${PROJECT_NAME}/worlds
+)
+
+install(
+  DIRECTORY
+  sim_files/
+  DESTINATION share/${PROJECT_NAME}/sim_files
 )
 
 ament_package()
