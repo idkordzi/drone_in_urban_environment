@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <sdf version="1.9">
 
-  <world name="world_test">
+  <world name="world_test_2">
     <physics name="1ms" type="ignore">
       <max_step_size>0.002</max_step_size>
       <real_time_factor>1.0</real_time_factor>
@@ -46,21 +46,29 @@
       <direction>-0.5 0.1 -0.9</direction>
     </light>
     
+    <!-- Ground plane -->
     <include>
       <uri>model://airfield</uri>
       <pose degrees="true">0 0 0 0 0 0</pose>
     </include>
 
-    <!-- Drone -->
-    <include>
-      <uri>model://iris_with_camera</uri>
-      <pose degrees="true">0 0 0.195 0 0 0</pose>
-    </include>
-
     <!-- Vehicle -->
     <include>
       <uri>model://pickup</uri>
-      <pose degrees="true">10 0 0 0 0 90.0</pose>
+      <pose degrees="true">3.0 2.5 0 0 0 0</pose>
+    </include>
+
+    <!-- Roads -->
+    <include>
+      <name>asphalt_road_narrow</name>
+      <uri>model://asphalt_road_narrow</uri>
+      <pose>10.0 2.5 0 0 0 0</pose>
+    </include>
+
+    <include>
+      <name>asphalt_road_narrow_0</name>
+      <uri>model://asphalt_road_narrow</uri>
+      <pose>12.5 10.0 0 0 0 1.57079</pose>
     </include>
 
   </world>

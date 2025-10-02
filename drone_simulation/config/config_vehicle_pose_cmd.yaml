@@ -2,10 +2,12 @@
   ros__parameters:
     ros_node:
       subs:
-        pickup_pose_cmd:   "/debug/pickup/cmd_pose"
+        gazebo_poses: "/gazebo/pose"
+        pickup_pose_cmd: "/debug/pickup/cmd_pose" # "/debug/pickup/cmd_pose"
       pubs:
-        pickup_pose_cmd: "/model/pickup/cmd_pose"
+        pickup_pose_cmd: /model/pickup/cmd_pose # "/drone/planner/goal" # "/model/pickup/cmd_pose"
       thread_freq: 50.0
       en_input: false
-      path_pub_period: 5.0 # [s]
-      path_file: "install/drone_simulation/share/drone_simulation/sim_files/path01.txt"
+      model_idx: 3 # 3
+      path_pub_period: 2.5 # [s]
+      path_file: "install/drone_simulation/share/drone_simulation/sim_files/path07.txt"

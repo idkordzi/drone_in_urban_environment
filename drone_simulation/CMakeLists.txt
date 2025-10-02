@@ -82,6 +82,16 @@ target_link_libraries(drive-to-pose-controller PRIVATE
   gz-sim${GZ_SIM_VER}::gz-sim${GZ_SIM_VER}
 )
 
+add_library(ackerman-controller
+  SHARED
+    plugins/AckermanController.cc
+    plugins/AckermanController.hh
+)
+target_link_libraries(ackerman-controller PRIVATE
+  gz-common${GZ_COMMON_VER}::gz-common${GZ_COMMON_VER}
+  gz-sim${GZ_SIM_VER}::gz-sim${GZ_SIM_VER}
+)
+
 # ################################################################
 # Build ros nodes
 # ################################################################
@@ -108,6 +118,7 @@ install(
   TARGETS
   drone-rotor-control
   drive-to-pose-controller
+  ackerman-controller
   ${TargetPickupPoseCmd}
   DESTINATION lib/${PROJECT_NAME}
 )

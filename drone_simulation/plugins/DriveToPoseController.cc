@@ -50,7 +50,7 @@ class gz::sim::systems::DriveToPoseControllerPrivate
 
   /// \brief Callback for odometry message
   /// \param[in] _msg Current odometry message
-  public: void OnCurrentPose(const msgs::Odometry &_msg);
+  public: void OnCurrentPose(const msgs::Pose_V &_msg);
 
   /// \brief Calculate velocity and publish a twist message
   public: void CalculateVelocity();
@@ -144,13 +144,19 @@ void DriveToPoseController::Configure(
 
   // Subscribe to odometry pose publisher
   this->dataPtr->node.Subscribe(
-    topicNamespace + "/odometry", &DriveToPoseControllerPrivate::OnCurrentPose,
+    //topicNamespace + "/odometry",
+    "/world/sim_town/pose/info",
+    // "/world/world_test_2/pose/info",
+    &DriveToPoseControllerPrivate::OnCurrentPose,
     this->dataPtr.get());
 
   std::vector<transport::MessagePublisher> publishers;
   std::vector<transport::MessagePublisher> subscribers;
   this->dataPtr->node.TopicInfo(
-    topicNamespace + "/odometry", publishers, subscribers);
+    //topicNamespace + "/odometry",
+    "/world/sim_town/pose/info",
+    // "/world/world_test_2/pose/info",
+    publishers, subscribers);
   if (publishers.size() < 1)
   {
     gzwarn << "Unable to find publisher on /pose topic!" << std::endl;
@@ -250,8 +256,8 @@ void DriveToPoseControllerPrivate::CalculateVelocity()
   cmdVelMsg.mutable_angular()->set_z(this->angularPGain * angularError);
   this->velocityPublisher.Publish(cmdVelMsg);
 
-  if (!this->targetPose)
-    this->poseReachedPublisher.Publish(msgs::Convert(*this->currentPose));
+  // if (!this->targetPose)
+  this->poseReachedPublisher.Publish(msgs::Convert(*this->currentPose));
 }
 
 //////////////////////////////////////////////////
@@ -275,10 +281,10 @@ void DriveToPoseControllerPrivate::OnCmdPose(const msgs::Pose_V &_msg)
 }
 
 //////////////////////////////////////////////////
-void DriveToPoseControllerPrivate::OnCurrentPose(const msgs::Odometry &_msg)
+void DriveToPoseControllerPrivate::OnCurrentPose(const msgs::Pose_V &_msg)
 {
   std::lock_guard<std::mutex> lock(this->mutex);
-  this->currentPose = msgs::Convert(_msg.pose());
+  this->currentPose = msgs::Convert(_msg.pose(3)); // 1 3
 }
 
 GZ_ADD_PLUGIN(DriveToPoseController,

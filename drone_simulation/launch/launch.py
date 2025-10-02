@@ -11,7 +11,10 @@ from launch_ros.actions import Node
 
 
 def generate_launch_description():
-    
+  
+  world_name = 'sim_town.sdf' # 'world_test.sdf', 'sim_town.sdf'
+  world_true_name = world_name[:-4] # exclude '.sdf' from name
+  
   drone_navigation_ros_pkg_path = get_package_share_directory('drone_navigation_ros')
   drone_simulation_ros_pkg_path = get_package_share_directory('drone_simulation')
   ros_gz_sim_pkg_path           = get_package_share_directory('ros_gz_sim')
@@ -19,7 +22,15 @@ def generate_launch_description():
   nav_config_dir = os.path.join(drone_navigation_ros_pkg_path, 'config')
   sim_config_dir = os.path.join(drone_simulation_ros_pkg_path, 'config')
 
-  world_file_path = os.path.join(drone_simulation_ros_pkg_path, 'worlds', 'world_test.sdf')
+  world_file_path = os.path.join(drone_simulation_ros_pkg_path, 'worlds', world_name)
+  
+  gz_bridge_config_path = os.path.join(sim_config_dir, 'config_gazebo_bridge.yaml')
+  with open(gz_bridge_config_path, 'r') as f:
+    config_content = f.read()
+  new_config_content = config_content.replace("world_name", world_true_name)
+  new_gz_bridge_config_path = os.path.join(sim_config_dir, 'config_gazebo_bridge_new.yaml')
+  with open(new_gz_bridge_config_path, 'w') as f:
+    f.write(new_config_content)
 
   gzserver_cmd = IncludeLaunchDescription(
     PythonLaunchDescriptionSource(
@@ -36,7 +47,7 @@ def generate_launch_description():
   
   ros_gz_bridge = RosGzBridge(
     bridge_name='ros_gz_bridge',
-    config_file=os.path.join(sim_config_dir, 'config_gazebo_bridge.yaml'),
+    config_file=new_gz_bridge_config_path,
   )
   
   node_pickup_cmd = Node(

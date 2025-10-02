@@ -1,0 +1,939 @@
+<?xml version="1.0"?>
+<sdf version='1.9'>
+
+  <world name='sim_town'>
+
+    <physics name="1ms" type="ignore">
+      <max_step_size>0.002</max_step_size>
+      <real_time_factor>1.0</real_time_factor>
+      <!-- <real_time_update_rate>0</real_time_update_rate> -->
+    </physics>
+
+    <plugin filename="gz-sim-physics-system"
+      name="gz::sim::systems::Physics">
+    </plugin>
+    <plugin filename="gz-sim-user-commands-system"
+      name="gz::sim::systems::UserCommands">
+    </plugin>
+    <plugin filename="gz-sim-scene-broadcaster-system"
+      name="gz::sim::systems::SceneBroadcaster">
+    </plugin>
+    <plugin
+      filename="gz-sim-sensors-system"
+      name="gz::sim::systems::Sensors">
+      <render_engine>ogre2</render_engine>
+    </plugin>
+    <plugin filename="gz-sim-imu-system"
+      name="gz::sim::systems::Imu">
+    </plugin>
+
+    <scene>
+      <ambient>1.0 1.0 1.0</ambient>
+      <background>0.8 0.8 0.8</background>
+      <sky></sky>
+    </scene>
+
+    <light type="directional" name="sun">
+      <cast_shadows>true</cast_shadows>
+      <pose>0 0 10 0 0 0</pose>
+      <diffuse>0.8 0.8 0.8 1</diffuse>
+      <specular>0.8 0.8 0.8 1</specular>
+      <attenuation>
+        <range>1000</range>
+        <constant>0.9</constant>
+        <linear>0.01</linear>
+        <quadratic>0.001</quadratic>
+      </attenuation>
+      <direction>-0.5 0.1 -0.9</direction>
+    </light>
+
+
+    <!-- Ground plane -->
+    <include>
+      <name>airfield</name>
+      <uri>model://airfield</uri>
+      <pose>0 0 0 0 0 0</pose>
+    </include>
+
+
+    <!-- Drone -->
+    <include>
+      <name>iris_with_camera</name>
+      <uri>model://iris_with_camera</uri>
+      <pose>0 0 0.2 0 0 0</pose>
+    </include>
+
+
+    <!-- Moving vehicle -->
+    <include>
+      <name>pickup</name>
+      <uri>model://pickup</uri>
+      <pose>8 2.5 0.025 0 0 0</pose>
+    </include>
+
+
+    <!-- Road 20x5x0.02 -->
+    <include>
+      <name>asphalt_road_narrow</name>
+      <uri>model://asphalt_road_narrow</uri>
+      <pose>10 2.5 0 0 0 0</pose>
+    </include>
+
+    <include>
+      <name>asphalt_road_narrow_0</name>
+      <uri>model://asphalt_road_narrow</uri>
+      <pose>30 2.5 0 0 0 0</pose>
+    </include>
+
+    <include>
+      <name>asphalt_road_narrow_1</name>
+      <uri>model://asphalt_road_narrow</uri>
+      <pose>37.5 10 0 0 0 1.5707900000000004</pose>
+    </include>
+
+    <include>
+      <name>asphalt_road_narrow_2</name>
+      <uri>model://asphalt_road_narrow</uri>
+      <pose>37.5 30 0 0 0 1.5707900000000004</pose>
+    </include>
+
+    <include>
+      <name>asphalt_road_narrow_3</name>
+      <uri>model://asphalt_road_narrow</uri>
+      <pose>27.5 30 0 0 0 1.5707900000000004</pose>
+    </include>
+
+    <include>
+      <name>asphalt_road_narrow_4</name>
+      <uri>model://asphalt_road_narrow</uri>
+      <pose>17.5 30 0 0 0 1.5707900000000004</pose>
+    </include>
+
+    <include>
+      <name>asphalt_road_narrow_5</name>
+      <uri>model://asphalt_road_narrow</uri>
+      <pose>7.5 30 0 0 0 1.5707900000000004</pose>
+    </include>
+
+    <include>
+      <name>asphalt_road_narrow_6</name>
+      <uri>model://asphalt_road_narrow</uri>
+      <pose>-2.5 30 0 0 0 1.5707900000000004</pose>
+    </include>
+    
+    <include>
+      <name>asphalt_road_narrow_7</name>
+      <uri>model://asphalt_road_narrow</uri>
+      <pose>-2.5 10 0 0 0 1.5707900000000004</pose>
+    </include>
+
+    <include>
+      <name>asphalt_road_narrow_8</name>
+      <uri>model://asphalt_road_narrow</uri>
+      <pose>-10 22.5 0 0 0 0</pose>
+    </include>
+
+    <include>
+      <name>asphalt_road_narrow_9</name>
+      <uri>model://asphalt_road_narrow</uri>
+      <pose>-35 22.5 0 0 0 0</pose>
+    </include>
+
+    <include>
+      <name>asphalt_road_narrow_10</name>
+      <uri>model://asphalt_road_narrow</uri>
+      <pose>-42.5 15 0 0 0 1.5707900000000004</pose>
+    </include>
+
+    <include>
+      <name>asphalt_road_narrow_11</name>
+      <uri>model://asphalt_road_narrow</uri>
+      <pose>-35 2.5 0 0 0 0</pose>
+    </include>
+
+    <include>
+      <name>asphalt_road_narrow_12</name>
+      <uri>model://asphalt_road_narrow</uri>
+      <pose>-10 2.5 0 0 0 0</pose>
+    </include>
+
+    <include>
+      <name>asphalt_road_narrow_13</name>
+      <uri>model://asphalt_road_narrow</uri>
+      <pose>-22.5 10 0 0 0 1.5707900000000004</pose>
+    </include>
+
+    <include>
+      <name>asphalt_road_narrow_14</name>
+      <uri>model://asphalt_road_narrow</uri>
+      <pose>-22.5 30 0 0 0 1.5707900000000004</pose>
+    </include>
+
+    <include>
+      <name>asphalt_road_narrow_15</name>
+      <uri>model://asphalt_road_narrow</uri>
+      <pose>50 40 0 0 0 1.5707900000000001</pose>
+    </include>
+
+    <include>
+      <name>asphalt_road_narrow_16</name>
+      <uri>model://asphalt_road_narrow</uri>
+      <pose>50 20 0 0 0 1.5707900000000004</pose>
+    </include>
+
+    <include>
+      <name>asphalt_road_narrow_17</name>
+      <uri>model://asphalt_road_narrow</uri>
+      <pose>50 0 0 0 0 1.5707900000000001</pose>
+    </include>
+
+
+    <!-- Road 10x5x0.02 -->
+    <include>
+      <name>asphalt_road_short</name>
+      <uri>model://asphalt_road_short</uri>
+      <pose>30 37.5 0 0 0 0</pose>
+    </include>
+
+    <include>
+      <name>asphalt_road_short_0</name>
+      <uri>model://asphalt_road_short</uri>
+      <pose>20 22.5 0 0 0 0</pose>
+    </include>
+
+    <include>
+      <name>asphalt_road_short_0ext1</name>
+      <uri>model://asphalt_road_short</uri>
+      <pose>15 22.5 0 0 0 0</pose>
+    </include>
+
+    <!-- <include>
+      <name>asphalt_road_short_0ext2</name>
+      <uri>model://asphalt_road_short</uri>
+      <pose>30 22.5 0 0 0 0</pose>
+    </include> -->
+
+    <include>
+      <name>asphalt_road_short_1</name>
+      <uri>model://asphalt_road_short</uri>
+      <pose>10 37.5 0 0 0 0</pose>
+    </include>
+
+    <include>
+      <name>asphalt_road_short_2</name>
+      <uri>model://asphalt_road_short</uri>
+      <pose>0 22.5 0 0 0 0</pose>
+    </include>
+
+    <include>
+      <name>asphalt_road_short_3</name>
+      <uri>model://asphalt_road_short</uri>
+      <pose>-2.5 45 0 0 0 1.5707900000000004</pose>
+    </include>
+
+    <include>
+      <name>asphalt_road_short_4</name>
+      <uri>model://asphalt_road_short</uri>
+      <pose>-22.5 45 0 0 0 1.5707900000000004</pose>
+    </include>
+
+    <include>
+      <name>asphalt_road_short_5</name>
+      <uri>model://asphalt_road_short</uri>
+      <pose>0 -2.5 0 0 0 0</pose>
+    </include>
+
+    <include>
+      <name>asphalt_road_short_6</name>
+      <uri>model://asphalt_road_short</uri>
+      <pose>-22.5 63 0 0 0 1.5707900000000001</pose>
+    </include>
+
+    <include>
+      <name>asphalt_road_short_7</name>
+      <uri>model://asphalt_road_short</uri>
+      <pose>-2.5 63 0 0 0 1.5707900000000001</pose>
+    </include>
+
+    <include>
+      <name>asphalt_road_short_8</name>
+      <uri>model://asphalt_road_short</uri>
+      <pose>17.5 63 0 0 0 1.5707900000000001</pose>
+    </include>
+
+    <include>
+      <name>asphalt_road_short_9</name>
+      <uri>model://asphalt_road_short</uri>
+      <pose>37.5 -5 0 0 0 1.5707900000000001</pose>
+    </include>
+
+    <include>
+      <name>asphalt_road_short_10</name>
+      <uri>model://asphalt_road_short</uri>
+      <pose>20 37.5 0 0 0 0</pose>
+    </include>
+
+    <include>
+      <name>asphalt_road_short_11</name>
+      <uri>model://asphalt_road_short</uri>
+      <pose>-22.5 -5 0 0 0 1.5707900000000001</pose>
+    </include>
+
+    <include>
+      <name>asphalt_road_short_12</name>
+      <uri>model://asphalt_road_short</uri>
+      <pose>50 63 0 0 0 1.5707900000000004</pose>
+    </include>
+
+    <include>
+      <name>asphalt_road_short_13</name>
+      <uri>model://asphalt_road_short</uri>
+      <pose>42.5 2.5 0 0 0 0</pose>
+    </include>
+
+
+    <!-- Road 20x8x0.02 -->
+    <include>
+      <name>asphalt_road_wide</name>
+      <uri>model://asphalt_road_wide</uri>
+      <pose>-15 54 0 0 0 0</pose>
+    </include>
+
+    <include>
+      <name>asphalt_road_wide_0</name>
+      <uri>model://asphalt_road_wide</uri>
+      <pose>5 54 0 0 0 0</pose>
+    </include>
+
+    <include>
+      <name>asphalt_road_wide_1</name>
+      <uri>model://asphalt_road_wide</uri>
+      <pose>25 54 0 0 0 0</pose>
+    </include>
+
+    <include>
+      <name>asphalt_road_wide_2</name>
+      <uri>model://asphalt_road_wide</uri>
+      <pose>45 54 0 0 0 0</pose>
+    </include>
+
+    <include>
+      <name>asphalt_road_wide_3</name>
+      <uri>model://asphalt_road_wide</uri>
+      <pose>-35 54 0 0 0 0</pose>
+    </include>
+
+    <include>
+      <name>asphalt_road_wide_4</name>
+      <uri>model://asphalt_road_wide</uri>
+      <pose>65 54 0 0 0 0</pose>
+    </include>
+
+    <include>
+      <name>asphalt_road_wide_5</name>
+      <uri>model://asphalt_road_wide</uri>
+      <pose>45 -14 0 0 0 0</pose>
+    </include>
+
+    <include>
+      <name>asphalt_road_wide_6</name>
+      <uri>model://asphalt_road_wide</uri>
+      <pose>39 -28 0 0 0 1.5707900000000004</pose>
+    </include>
+
+    <include>
+      <name>asphalt_road_wide_7</name>
+      <uri>model://asphalt_road_wide</uri>
+      <pose>45 -42 0 0 0 0</pose>
+    </include>
+
+    <include>
+      <name>asphalt_road_wide_8</name>
+      <uri>model://asphalt_road_wide</uri>
+      <pose>60 -42 0 0 0 0</pose>
+    </include>
+
+    <include>
+      <name>asphalt_road_wide_9</name>
+      <uri>model://asphalt_road_wide</uri>
+      <pose>60 -14 0 0 0 0</pose>
+    </include>
+
+    <include>
+      <name>asphalt_road_wide_10</name>
+      <uri>model://asphalt_road_wide</uri>
+      <pose>66 -28 0 0 0 1.5707900000000004</pose>
+    </include>
+
+
+    <!-- Road 10x5x0.3 -->
+    <include>
+      <name>asphalt_road_thick</name>
+      <uri>model://asphalt_road_thick</uri>
+      <pose>-22.5 22.5 3 0 0 0</pose>
+    </include>
+
+    <include>
+      <name>asphalt_road_thick_0</name>
+      <uri>model://asphalt_road_thick</uri>
+      <pose>-12.859999999999999 22.5 1.302 0 0.34900000000000009 0</pose>
+    </include>
+
+    <include>
+      <name>asphalt_road_thick_1</name>
+      <uri>model://asphalt_road_thick</uri>
+      <pose>-32.140000000000001 22.5 1.302 0 -0.34900000000000009 0</pose>
+    </include>
+
+
+    <!-- Town building -->
+    <include>
+      <name>office_building</name>
+      <uri>model://office_building</uri>
+      <pose>2 6.5 0 0 0 0</pose>
+    </include>
+
+    <include>
+      <name>office_building_0</name>
+      <uri>model://office_building</uri>
+      <pose>5.5 6.5 0 0 0 0</pose>
+    </include>
+
+    <include>
+      <name>office_building_1</name>
+      <uri>model://office_building</uri>
+      <pose>11 6.5 0 0 0 0</pose>
+    </include>
+
+    <include>
+      <name>office_building_2</name>
+      <uri>model://office_building</uri>
+      <pose>14 6.5 0 0 0 0</pose>
+    </include>
+
+    <include>
+      <name>office_building_3</name>
+      <uri>model://office_building</uri>
+      <pose>17 6.5 0 0 0 0</pose>
+    </include>
+
+    <include>
+      <name>office_building_4</name>
+      <uri>model://office_building</uri>
+      <pose>32.685000000000002 6.5 0 0 0 0</pose>
+    </include>
+
+    <include>
+      <name>office_building_5</name>
+      <uri>model://office_building</uri>
+      <pose>26.699999999999999 6.5 0 0 0 0</pose>
+    </include>
+
+    <include>
+      <name>office_building_6</name>
+      <uri>model://office_building</uri>
+      <pose>23.699999999999999 6.5 0 0 0 0</pose>
+    </include>
+
+    <include>
+      <name>office_building_7</name>
+      <uri>model://office_building</uri>
+      <pose>7 -2 0 0 0 3.1415899999999999</pose>
+    </include>
+
+    <include>
+      <name>office_building_8</name>
+      <uri>model://office_building</uri>
+      <pose>10 -2 0 0 0 3.1415899999999999</pose>
+    </include>
+
+    <include>
+      <name>office_building_9</name>
+      <uri>model://office_building</uri>
+      <pose>19 -2 0 0 0 3.1415899999999999</pose>
+    </include>
+
+    <include>
+      <name>office_building_10</name>
+      <uri>model://office_building</uri>
+      <pose>32 -2 0 0 0 3.1415899999999999</pose>
+    </include>
+
+    <include>
+      <name>office_building_11</name>
+      <uri>model://office_building</uri>
+      <pose>29 -2 0 0 0 3.1415899999999999</pose>
+    </include>
+
+    <include>
+      <name>office_building_12</name>
+      <uri>model://office_building</uri>
+      <pose>42 -8 0 0 0 0</pose>
+    </include>
+
+    <include>
+      <name>office_building_13</name>
+      <uri>model://office_building</uri>
+      <pose>45 -8 0 0 0 0</pose>
+    </include>
+
+    <include>
+      <name>office_building_14</name>
+      <uri>model://office_building</uri>
+      <pose>33 -6 0 0 0 1.5707900000000004</pose>
+    </include>
+
+    <include>
+      <name>office_building_15</name>
+      <uri>model://office_building</uri>
+      <pose>33 -9 0 0 0 1.5707900000000004</pose>
+    </include>
+
+    <include>
+      <name>office_building_16</name>
+      <uri>model://office_building</uri>
+      <pose>33 32 0 0 0 1.5707900000000004</pose>
+    </include>
+
+    <include>
+      <name>office_building_17</name>
+      <uri>model://office_building</uri>
+      <pose>33 28 0 0 0 1.5707900000000004</pose>
+    </include>
+
+    <include>
+      <name>office_building_18</name>
+      <uri>model://office_building</uri>
+      <pose>33 22 0 0 0 1.5707900000000004</pose>
+    </include>
+
+    <include>
+      <name>office_building_19</name>
+      <uri>model://office_building</uri>
+      <pose>33 19 0 0 0 1.5707900000000004</pose>
+    </include>
+
+    <include>
+      <name>office_building_20</name>
+      <uri>model://office_building</uri>
+      <pose>33 12 0 0 0 1.5707900000000004</pose>
+    </include>
+
+    <include>
+      <name>office_building_21</name>
+      <uri>model://office_building</uri>
+      <pose>33 9 0 0 0 1.5707900000000004</pose>
+    </include>
+
+    <include>
+      <name>office_building_22</name>
+      <uri>model://office_building</uri>
+      <pose>22.5 27.5 0 0 0 0</pose>
+    </include>
+
+    <include>
+      <name>office_building_23</name>
+      <uri>model://office_building</uri>
+      <pose>22.5 30 0 0 0 3.1415899999999999</pose>
+    </include>
+
+    <include>
+      <name>office_building_24</name>
+      <uri>model://office_building</uri>
+      <pose>22.5 42 0 0 0 0</pose>
+    </include>
+
+    <include>
+      <name>office_building_25</name>
+      <uri>model://office_building</uri>
+      <pose>12.5 32 0 0 0 -1.5707900000000004</pose>
+    </include>
+
+    <include>
+      <name>office_building_26</name>
+      <uri>model://office_building</uri>
+      <pose>12.5 29 0 0 0 -1.5707900000000004</pose>
+    </include>
+
+    <!-- <include>
+      <name>office_building_27</name>
+      <uri>model://office_building</uri>
+      <pose>12.5 22 0 0 0 -1.5707900000000004</pose>
+    </include> -->
+
+    <include>
+      <name>office_building_28</name>
+      <uri>model://office_building</uri>
+      <pose>2.5 27 0 0 0 0</pose>
+    </include>
+
+    <include>
+      <name>office_building_29</name>
+      <uri>model://office_building</uri>
+      <pose>29.699999999999999 6.5 0 0 0 0</pose>
+    </include>
+
+    <include>
+      <name>office_building_30</name>
+      <uri>model://office_building</uri>
+      <pose>-37.5 18 0 0 0 -1.5707900000000004</pose>
+    </include>
+
+    <include>
+      <name>office_building_31</name>
+      <uri>model://office_building</uri>
+      <pose>-37.5 15 0 0 0 -1.5707900000000004</pose>
+    </include>
+
+    <include>
+      <name>office_building_32</name>
+      <uri>model://office_building</uri>
+      <pose>2 18 0 0 0 3.1415899999999999</pose>
+    </include>
+
+    <include>
+      <name>office_building_33</name>
+      <uri>model://office_building</uri>
+      <pose>-18 17 0 0 0 -1.5907900000000001</pose>
+    </include>
+
+    <include>
+      <name>office_building_34</name>
+      <uri>model://office_building</uri>
+      <pose>33 -35 0 0 0 1.5707900000000004</pose>
+    </include>
+
+    <include>
+      <name>office_building_35</name>
+      <uri>model://office_building</uri>
+      <pose>33 -38 0 0 0 1.5707900000000004</pose>
+    </include>
+
+    <include>
+      <name>office_building_36</name>
+      <uri>model://office_building</uri>
+      <pose>33 -41 0 0 0 1.5707900000000004</pose>
+    </include>
+
+    <include>
+      <name>office_building_37</name>
+      <uri>model://office_building</uri>
+      <pose>55 -8 0 0 0 0</pose>
+    </include>
+
+    <include>
+      <name>office_building_38</name>
+      <uri>model://office_building</uri>
+      <pose>-18 47 0 0 0 3.1415899999999999</pose>
+    </include>
+
+    <include>
+      <name>office_building_39</name>
+      <uri>model://office_building</uri>
+      <pose>-27 47 0.20000000000000001 0 0 3.1415899999999999</pose>
+    </include>
+
+    <include>
+      <name>office_building_40</name>
+      <uri>model://office_building</uri>
+      <pose>-18 7 0 0 0 -1.5707900000000001</pose>
+    </include>
+
+    <include>
+      <name>office_building_41</name>
+      <uri>model://office_building</uri>
+      <pose>-28 -3 0 0 0 3.1415899999999999</pose>
+    </include>
+
+    <include>
+      <name>office_building_42</name>
+      <uri>model://office_building</uri>
+      <pose>-8 47 0 0 0 3.1415899999999999</pose>
+    </include>
+
+    <include>
+      <name>office_building_43</name>
+      <uri>model://office_building</uri>
+      <pose>-11 47 0 0 0 3.1415899999999999</pose>
+    </include>
+
+    <include>
+      <name>office_building_44</name>
+      <uri>model://office_building</uri>
+      <pose>-8 61 0 0 0 0</pose>
+    </include>
+
+    <include>
+      <name>office_building_45</name>
+      <uri>model://office_building</uri>
+      <pose>-13 61 0 0 0 0</pose>
+    </include>
+    
+    <include>
+      <name>office_building_46</name>
+      <uri>model://office_building</uri>
+      <pose>12 61 0 0 0 0</pose>
+    </include>
+
+    <include>
+      <name>office_building_47</name>
+      <uri>model://office_building</uri>
+      <pose>3 47 0 0 0 3.1415899999999999</pose>
+    </include>
+
+    <include>
+      <name>office_building_48</name>
+      <uri>model://office_building</uri>
+      <pose>13 47 0 0 0 3.1415899999999999</pose>
+    </include>
+
+    <include>
+      <name>office_building_49</name>
+      <uri>model://office_building</uri>
+      <pose>16 47 0 0 0 3.1415899999999999</pose>
+    </include>
+
+    <include>
+      <name>office_building_50</name>
+      <uri>model://office_building</uri>
+      <pose>19 47 0 0 0 3.1415899999999999</pose>
+    </include>
+
+    <include>
+      <name>office_building_51</name>
+      <uri>model://office_building</uri>
+      <pose>21 47 0 0 0 3.1415899999999999</pose>
+    </include>
+
+    <include>
+      <name>office_building_52</name>
+      <uri>model://office_building</uri>
+      <pose>22 65 0 0 0 0</pose>
+    </include>
+
+    <include>
+      <name>office_building_53</name>
+      <uri>model://office_building</uri>
+      <pose>25 65 0 0 0 0</pose>
+    </include>
+
+    <include>
+      <name>office_building_55</name>
+      <uri>model://office_building</uri>
+      <pose>35 61 0 0 0 0</pose>
+    </include>
+
+    <include>
+      <name>office_building_56</name>
+      <uri>model://office_building</uri>
+      <pose>38 61 0 0 0 0</pose>
+    </include>
+
+    <include>
+      <name>office_building_54</name>
+      <uri>model://office_building</uri>
+      <pose>28 65 0 0 0 0</pose>
+    </include>
+
+    <include>
+      <name>office_building_57</name>
+      <uri>model://office_building</uri>
+      <pose>37 47 0 0 0 3.1415899999999999</pose>
+    </include>
+
+    <include>
+      <name>office_building_58</name>
+      <uri>model://office_building</uri>
+      <pose>45 47 0 0 0 3.1415899999999999</pose>
+    </include>
+
+    <include>
+      <name>office_building_59</name>
+      <uri>model://office_building</uri>
+      <pose>42 47 0 0 0 3.1415899999999999</pose>
+    </include>
+
+    <include>
+      <name>office_building_60</name>
+      <uri>model://office_building</uri>
+      <pose>55 47 0 0 0 -1.5707900000000004</pose>
+    </include>
+
+    <include>
+      <name>office_building_61</name>
+      <uri>model://office_building</uri>
+      <pose>55 36 0 0 0 -1.5707900000000004</pose>
+    </include>
+
+    <include>
+      <name>office_building_62</name>
+      <uri>model://office_building</uri>
+      <pose>45 8 0.20000000000000001 0 0 1.5707900000000004</pose>
+    </include>
+
+    <include>
+      <name>office_building_63</name>
+      <uri>model://office_building</uri>
+      <pose>30 42 0 0 0 0</pose>
+    </include>
+
+    <include>
+      <name>office_building_64</name>
+      <uri>model://office_building</uri>
+      <pose>33 42 0 0 0 0</pose>
+    </include>
+
+    <include>
+      <name>office_building_65</name>
+      <uri>model://office_building</uri>
+      <pose>36 42 0 0 0 0</pose>
+    </include>
+
+    <include>
+      <name>office_building_66</name>
+      <uri>model://office_building</uri>
+      <pose>42 37 0 0 0 -1.5707900000000004</pose>
+    </include>
+
+    <include>
+      <name>office_building_67</name>
+      <uri>model://office_building</uri>
+      <pose>42 26 0 0 0 -1.5707900000000004</pose>
+    </include>
+
+    <include>
+      <name>office_building_68</name>
+      <uri>model://office_building</uri>
+      <pose>14 42 0 0 0 0</pose>
+    </include>
+
+    <include>
+      <name>office_building_69</name>
+      <uri>model://office_building</uri>
+      <pose>11 42 0 0 0 0</pose>
+    </include>
+
+    <include>
+      <name>office_building_70</name>
+      <uri>model://office_building</uri>
+      <pose>7 42 0 0 0 0</pose>
+    </include>
+
+    <include>
+      <name>office_building_71</name>
+      <uri>model://office_building</uri>
+      <pose>-7 18 0.20000000000000001 0 0 1.5707900000000004</pose>
+    </include>
+
+    <include>
+      <name>office_building_72</name>
+      <uri>model://office_building</uri>
+      <pose>-27 27 0.20000000000000001 0 0 1.5707900000000004</pose>
+    </include>
+
+
+    <!-- Static vehicles -->
+    <!-- <include>
+      <name>pickup_with_wheels</name>
+      <uri>model://pickup_with_wheels</uri>
+      <pose>43.5 2.5 0.20000000000000001 0 0 3.1415899999999999</pose>
+    </include> -->
+
+    <!-- <include>
+      <name>pickup_with_wheels_0</name>
+      <uri>model://pickup_with_wheels</uri>
+      <pose>-17 13 0 0 0 0.79999999999999993</pose>
+    </include> -->
+
+    <!-- <include>
+      <name>pickup_with_wheels_1</name>
+      <uri>model://pickup_with_wheels</uri>
+      <pose>-22.5 -4 0.20000000000000001 0 0 -1.5707900000000004</pose>
+    </include> -->
+    
+    <include>
+      <name>pickup_with_wheels_2</name>
+      <uri>model://pickup_with_wheels</uri>
+      <pose>-14 50 0 0 0 -0.20000000000000018</pose>
+    </include>
+
+    <include>
+      <name>pickup_with_wheels_3</name>
+      <uri>model://pickup_with_wheels</uri>
+      <pose>8 60 0 0 0 1.7</pose>
+    </include>
+
+    <include>
+      <name>pickup_with_wheels_4</name>
+      <uri>model://pickup_with_wheels</uri>
+      <pose>4.5 60.5 0 0 0 1.3999999999999997</pose>
+    </include>
+
+    <include>
+      <name>pickup_with_wheels_5</name>
+      <uri>model://pickup_with_wheels</uri>
+      <pose>1.3 61 0 0 0 -1.3999999999999997</pose>
+    </include>
+
+    <include>
+      <name>pickup_with_wheels_6</name>
+      <uri>model://pickup_with_wheels</uri>
+      <pose>8 48 0 0 0 -0.49999999999999989</pose>
+    </include>
+
+    <include>
+      <name>pickup_with_wheels_7</name>
+      <uri>model://pickup_with_wheels</uri>
+      <pose>17.5 61 0.20000000000000001 0 0 -1.5707900000000004</pose>
+    </include>
+
+    <include>
+      <name>pickup_with_wheels_8</name>
+      <uri>model://pickup_with_wheels</uri>
+      <pose>27 60 0 0 0 2.8999999999999999</pose>
+    </include>
+
+    <include>
+      <name>pickup_with_wheels_9</name>
+      <uri>model://pickup_with_wheels</uri>
+      <pose>37 58 0 0 0 3.1000000000000001</pose>
+    </include>
+
+    <include>
+      <name>pickup_with_wheels_10</name>
+      <uri>model://pickup_with_wheels</uri>
+      <pose>26 49 0 0 0 -0.30000000000000032</pose>
+    </include>
+
+    <include>
+      <name>pickup_with_wheels_11</name>
+      <uri>model://pickup_with_wheels</uri>
+      <pose>32 49 0 0 0 -0.49999999999999994</pose>
+    </include>
+
+    <include>
+      <name>pickup_with_wheels_12</name>
+      <uri>model://pickup_with_wheels</uri>
+      <pose>49.5 61 0.20000000000000001 0 0 1.7999999999999998</pose>
+    </include>
+
+    <!-- <include>
+      <name>pickup_with_wheels_13</name>
+      <uri>model://pickup_with_wheels</uri>
+      <pose>56 42 0 0 0 -0.49999999999999994</pose>
+    </include> -->
+
+    <include>
+      <name>pickup_with_wheels_14</name>
+      <uri>model://pickup_with_wheels</uri>
+      <pose>-27 62 0 0 0 -2.1000000000000001</pose>
+    </include>
+
+    <include>
+      <name>pickup_with_wheels_15</name>
+      <uri>model://pickup_with_wheels</uri>
+      <pose>52 -28 0 0 0 0.30000000000000032</pose>
+    </include>
+
+  </world>
+</sdf>
