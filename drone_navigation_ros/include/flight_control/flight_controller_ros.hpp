@@ -44,6 +44,9 @@ struct FlightControllerNodeConfig {
   std::string pub_drone_velocity     = "/drone/controller/velocity";
   std::string pub_drone_acceleration = "/drone/controller/acceleration";
 
+  std::string pub_drone_estim_pose = "/drone/controller/estim/pose";
+  std::string pub_drone_estim_vel  = "/drone/controller/estim/vel";
+
   unsigned gz_idx = 1; // index of drone model in gazebo in models pose vector
 
   float thread_hz = 50.0f; // [Hz]
@@ -113,6 +116,9 @@ private:
   geometry_msgs::msg::TwistStamped::SharedPtr msg_velocity_;
   geometry_msgs::msg::AccelStamped::SharedPtr msg_acceleration_;
 
+  geometry_msgs::msg::PoseStamped::SharedPtr msg_estim_pose_;
+  geometry_msgs::msg::TwistStamped::SharedPtr msg_estim_vel_;
+
   // subscribers // debug
   rclcpp::Subscription<geometry_msgs::msg::PoseArray>::SharedPtr sub_debug_pose_;
   rclcpp::Subscription<drone_navigation_msgs::msg::ControlVector>::SharedPtr sub_debug_control_;
@@ -126,6 +132,9 @@ private:
   rclcpp::Publisher<geometry_msgs::msg::PoseStamped>::SharedPtr pub_drone_pose_;
   rclcpp::Publisher<geometry_msgs::msg::TwistStamped>::SharedPtr pub_drone_vel_;
   rclcpp::Publisher<geometry_msgs::msg::AccelStamped>::SharedPtr pub_drone_acc_;
+
+  rclcpp::Publisher<geometry_msgs::msg::PoseStamped>::SharedPtr pub_drone_estim_pose_;
+  rclcpp::Publisher<geometry_msgs::msg::TwistStamped>::SharedPtr pub_drone_estim_vel_;
 
   // execution thread
   std::unique_ptr<rclcpp::Rate> execute_rate_;

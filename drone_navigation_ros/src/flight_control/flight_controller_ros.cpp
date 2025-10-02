@@ -86,6 +86,14 @@ void FlightControllerROS::publish() {
   this->msg_acceleration_->header.stamp = this->get_clock()->now();
   this->msg_acceleration_->header.frame_id = "odom";
   this->pub_drone_acc_->publish(*this->msg_acceleration_);
+
+  this->msg_estim_pose_->header.stamp = this->get_clock()->now();
+  this->msg_estim_pose_->header.frame_id = "odom";
+  this->pub_drone_estim_pose_->publish(*this->msg_estim_pose_);
+
+  this->msg_estim_vel_->header.stamp = this->get_clock()->now();
+  this->msg_estim_vel_->header.frame_id = "odom";
+  this->pub_drone_estim_vel_->publish(*this->msg_estim_vel_);
 }
 
 void FlightControllerROS::executeThread() {
@@ -100,9 +108,48 @@ void FlightControllerROS::executeThread() {
 
 void FlightControllerROS::updateDroneState() {
 
+  // Eigen::VectorXf inputs = Eigen::Vector<float,4>::Zero();
+  // Eigen::VectorXf measurements = Eigen::Vector<float,6>::Zero();
+
+  // inputs(0) = this->msg_control_->control.fl;
+  // inputs(1) = this->msg_control_->control.fr;
+  // inputs(2) = this->msg_control_->control.rl;
+  // inputs(3) = this->msg_control_->control.rr;
+
+  // measurements(0) = this->imu_cache_->linear_acceleration.x;
+  // measurements(1) = this->imu_cache_->linear_acceleration.y;
+  // measurements(2) = this->imu_cache_->linear_acceleration.z;
+  // measurements(3) = this->imu_cache_->angular_velocity.x;
+  // measurements(4) = this->imu_cache_->angular_velocity.y;
+  // measurements(5) = this->imu_cache_->angular_velocity.z;
+
+  // this->estimator_->runEstimate(inputs, measurements);
+  // Eigen::VectorXf state_estim = this->estimator_->getState();
+
+  // tf2::Quaternion q;
+  // q.setRPY(state_estim(6), state_estim(7), state_estim(8));
+
+  // this->msg_estim_pose_->pose.position.x = state_estim(0);
+  // this->msg_estim_pose_->pose.position.y = state_estim(1);
+  // this->msg_estim_pose_->pose.position.z = state_estim(2);
+
+  // this->msg_estim_vel_->twist.linear.x = state_estim(3);
+  // this->msg_estim_vel_->twist.linear.y = state_estim(4);
+  // this->msg_estim_vel_->twist.linear.z = state_estim(5);
+
+  // this->msg_estim_pose_->pose.orientation.x = q.x();
+  // this->msg_estim_pose_->pose.orientation.y = q.y();
+  // this->msg_estim_pose_->pose.orientation.z = q.z();
+  // this->msg_estim_pose_->pose.orientation.w = q.w();
+
+  // this->msg_estim_vel_->twist.angular.x = state_estim(9);
+  // this->msg_estim_vel_->twist.angular.y = state_estim(10);
+  // this->msg_estim_vel_->twist.angular.z = state_estim(11);
+
   // Use state estimator
   if (this->config_.use_state_internal) {
-    // TODO get results from state estimator (NOT IMPLEMENTED YET)
+    this->msg_pose_->pose = this->msg_estim_pose_->pose;
+    this->msg_velocity_->twist.linear =  this->msg_estim_vel_->twist.linear;
   }
   // Use measurements from simulator
   else {
@@ -202,6 +249,9 @@ void FlightControllerROS::declareRosParameters() {
   this->declare_parameter("ros_node.pubs.drone_velocity", rclcpp::PARAMETER_STRING);
   this->declare_parameter("ros_node.pubs.drone_acceleration", rclcpp::PARAMETER_STRING);
 
+  this->declare_parameter("ros_node.pubs.drone_estim_pose", rclcpp::PARAMETER_STRING);
+  this->declare_parameter("ros_node.pubs.drone_estim_vel", rclcpp::PARAMETER_STRING);
+
   this->declare_parameter("ros_node.gz_model_idx", rclcpp::PARAMETER_INTEGER);
   this->declare_parameter("ros_node.thread_freq", rclcpp::PARAMETER_DOUBLE);
   this->declare_parameter("ros_node.en_control_int", rclcpp::PARAMETER_BOOL);
@@ -240,6 +290,9 @@ void FlightControllerROS::initializeRosNodeConfig() {
   this->config_.pub_drone_pose         = this->get_parameter("ros_node.pubs.drone_pose").as_string();
   this->config_.pub_drone_velocity     = this->get_parameter("ros_node.pubs.drone_velocity").as_string();
   this->config_.pub_drone_acceleration = this->get_parameter("ros_node.pubs.drone_acceleration").as_string();
+
+  this->config_.pub_drone_estim_pose = this->get_parameter("ros_node.pubs.drone_estim_pose").as_string();
+  this->config_.pub_drone_estim_vel  = this->get_parameter("ros_node.pubs.drone_estim_vel").as_string();
 
   // other params
   this->config_.gz_idx = (unsigned)(this->get_parameter("ros_node.gz_model_idx").as_int());
@@ -354,11 +407,17 @@ void FlightControllerROS::initializePublishers() {
   this->pub_drone_vel_ = this->create_publisher<geometry_msgs::msg::TwistStamped>(this->config_.pub_drone_velocity, 1);
   this->pub_drone_acc_ = this->create_publisher<geometry_msgs::msg::AccelStamped>(this->config_.pub_drone_acceleration, 1);
 
+  this->pub_drone_estim_pose_ = this->create_publisher<geometry_msgs::msg::PoseStamped>(this->config_.pub_drone_estim_pose, 1);
+  this->pub_drone_estim_vel_ = this->create_publisher<geometry_msgs::msg::TwistStamped>(this->config_.pub_drone_estim_vel, 1);
+
   // published msg cache
   this->msg_control_ = std::make_shared<drone_navigation_msgs::msg::ControlVectorStamped>();
   this->msg_pose_ = std::make_shared<geometry_msgs::msg::PoseStamped>();
   this->msg_velocity_ = std::make_shared<geometry_msgs::msg::TwistStamped>();
   this->msg_acceleration_ = std::make_shared<geometry_msgs::msg::AccelStamped>();
+
+  this->msg_estim_pose_ = std::make_shared<geometry_msgs::msg::PoseStamped>();
+  this->msg_estim_vel_ = std::make_shared<geometry_msgs::msg::TwistStamped>();
 }
 
 void FlightControllerROS::initializeExecutionThread() {

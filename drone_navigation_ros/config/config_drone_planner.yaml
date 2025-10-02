@@ -10,7 +10,7 @@
         planner_goal: "/drone/planner/goal"
         planner_hist_image: "/drone/planner/image/hist"
         planner_cost_image: "/drone/planner/image/cost"
-      thread_freq: 30.0
+      thread_freq: 20.0
     
     planner:
       en_cuda: true
@@ -27,8 +27,8 @@
 
       goal_dev_margin: 0.2 # [m]
 
-      goal_min_dist: 4.0 # [m]
-      goal_min_alt_diff: 1.0 # [m]
+      goal_min_dist: 2.0 # [m]
+      goal_min_alt_diff: 2.0 # [m]
 
       max_candidates_per_it: 3
       drone_pos_margin: 0.2 # [m]

@@ -11,6 +11,8 @@
         drone_pose:         "/drone/controller/pose"
         drone_velocity:     "/drone/controller/velocity"
         drone_acceleration: "/drone/controller/acceleration"
+        drone_estim_pose:   "/drone/controller/estim/pose"
+        drone_estim_vel:    "/drone/controller/estim/vel"
       gz_model_idx: 1
       thread_freq: 100.0
       en_control_int: true
@@ -50,8 +52,8 @@
       ]
       pid_lim: [-450.0, 450.0] # pid min/max output
 
-      ang_x_lim: 0.4 # [rad] # 0.314159
-      ang_y_lim: 0.4 # [rad]
+      ang_x_lim: 0.5 # [rad] # 0.314159
+      ang_y_lim: 0.5 # [rad]
 
       yaw_off_pos_margin: 0.1
 
