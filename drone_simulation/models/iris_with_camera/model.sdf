@@ -6,7 +6,8 @@
     </include>
 
     <link name='camera_link'>
-      <pose degrees="true">0.097 0.002 0 0 90 0</pose>
+      <!-- <pose degrees="true">0.097 0.002 0 0 90 0</pose> -->
+      <pose degrees="true">0.1 0.002 0 0 110 0</pose>
       <inertial>
         <mass>0.000001</mass>
         <inertia>

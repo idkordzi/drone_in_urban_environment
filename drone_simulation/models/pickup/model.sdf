@@ -32,8 +32,53 @@
       </visual>
     </link>
 
-    <link name="FrontRightWheel">
-      <pose relative_to="FrontRightWheelJoint">0 0 0 0 0 0</pose>
+
+    <joint name="servo_c" type="revolute">
+      <parent>base_link</parent>
+      <child>FrontCenterWheelSteering</child>
+      <pose relative_to="base_link">1.78 0 0.4 0 0 0</pose>
+      <axis>
+        <xyz>0 0 1</xyz>
+        <limit>
+          <lower>-1.57079</lower>
+          <upper>1.57079</upper>
+          <velocity>10.0</velocity>
+          <effort>500.0</effort>
+        </limit>
+        <use_parent_model_frame>1</use_parent_model_frame>
+      </axis>
+    </joint>
+    <link name="FrontCenterWheelSteering">
+      <pose relative_to="servo_c">0 0 0 0 0 0</pose>
+      <inertial>
+        <mass>0.005</mass>
+        <inertia>
+          <ixx>0.0000018</ixx>
+          <iyy>0.0000018</iyy>
+          <izz>0.0000018</izz>
+        </inertia>
+      </inertial>
+    </link>
+    <joint name="FrontCenterWheelJoint" type="revolute">
+      <parent>FrontCenterWheelSteering</parent>
+      <child>FrontCenterWheel</child>
+      <pose relative_to="servo_c" degrees="true">0 0 0 -90 0 0</pose>
+      <axis>
+        <xyz>0 1 0</xyz>
+        <limit>
+          <lower>-1.79769e+308</lower>
+          <upper>1.79769e+308</upper>
+          <velocity>50.0</velocity>
+        </limit>
+        <dynamics>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+        <use_parent_model_frame>1</use_parent_model_frame>
+      </axis>
+    </joint>
+    <link name="FrontCenterWheel">
+      <pose relative_to="FrontCenterWheelJoint">0 0 0 0 0 0</pose>
       <inertial>
         <mass>.05</mass>
         <inertia>
@@ -47,8 +92,8 @@
       </inertial>
       <gravity>true</gravity>
       <velocity_decay/>
-      <visual name="FrontRightWheelVisual">
-        <pose relative_to="FrontRightWheelJoint">0 -0.0 0 0 0 0</pose>
+      <!-- <visual name="FrontCenterWheelVisual">
+        <pose relative_to="FrontCenterWheelJoint">0 0.0 0 0 0 0</pose>
         <geometry>
           <cylinder>
             <length>0.3</length>
@@ -65,9 +110,9 @@
             </metal>
           </pbr>
         </material>
-      </visual>
-      <collision name="FrontRightWheelCollision">
-        <pose relative_to="FrontRightWheelJoint">0 -0.0 0 0 0 0</pose>
+      </visual> -->
+      <collision name="FrontCenterWheelCollision">
+        <pose relative_to="FrontCenterWheelJoint">0 0.0 0 0 0 0</pose>
         <geometry>
           <cylinder>
             <length>0.3</length>
@@ -91,6 +136,50 @@
         </surface>
       </collision>
     </link>
+
+
+    <joint name="servo_0" type="revolute">
+      <parent>base_link</parent>
+      <child>FrontLeftWheelSteering</child>
+      <pose relative_to="base_link">1.78 0.95 0.4 0 0 0</pose>
+      <axis>
+        <xyz>0 0 1</xyz>
+        <limit>
+          <lower>-0.0</lower>
+          <upper>0.0</upper>
+          <velocity>0.0</velocity>
+          <effort>0.0</effort>
+        </limit>
+        <use_parent_model_frame>1</use_parent_model_frame>
+      </axis>
+    </joint>
+    <joint name="servo_1" type="revolute">
+      <parent>base_link</parent>
+      <child>FrontRightWheelSteering</child>
+      <pose relative_to="base_link">1.78 -0.95 0.4 0 0 0</pose>
+      <axis>
+        <xyz>0 0 1</xyz>
+        <limit>
+          <lower>-0.0</lower>
+          <upper>0.0</upper>
+          <velocity>0.0</velocity>
+          <effort>0.0</effort>
+        </limit>
+        <use_parent_model_frame>1</use_parent_model_frame>
+      </axis>
+    </joint>
+
+    <link name="FrontLeftWheelSteering">
+      <pose relative_to="servo_0">0 0 0 0 0 0</pose>
+      <inertial>
+        <mass>0.005</mass>
+        <inertia>
+          <ixx>0.0000018</ixx>
+          <iyy>0.0000018</iyy>
+          <izz>0.0000018</izz>
+        </inertia>
+      </inertial>
+    </link>
     <link name="FrontRightWheelSteering">
       <pose relative_to="servo_1">0 0 0 0 0 0</pose>
       <inertial>
@@ -102,6 +191,82 @@
         </inertia>
       </inertial>
     </link>
+
+
+    <joint name="FrontLeftWheelJoint" type="revolute">
+      <parent>FrontLeftWheelSteering</parent>
+      <child>FrontLeftWheel</child>
+      <pose relative_to="servo_0" degrees="true">0 0 0 -90 0 0</pose>
+      <axis>
+        <xyz>0 1 0</xyz>
+        <limit>
+          <lower>-1.79769e+308</lower>
+          <upper>1.79769e+308</upper>
+          <velocity>50.0</velocity>
+        </limit>
+        <dynamics>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+        <use_parent_model_frame>1</use_parent_model_frame>
+      </axis>
+    </joint>
+    <joint name="FrontRightWheelJoint" type="revolute">
+      <parent>FrontRightWheelSteering</parent>
+      <child>FrontRightWheel</child>
+      <pose relative_to="servo_1" degrees="true">0 0 0 90 0 0</pose>
+      <axis>
+        <xyz>0 1 0</xyz>
+        <limit>
+          <lower>-1.79769e+308</lower>
+          <upper>1.79769e+308</upper>
+          <velocity>50.0</velocity>
+        </limit>
+        <dynamics>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+        <use_parent_model_frame>1</use_parent_model_frame>
+      </axis>
+    </joint>
+    
+    <joint name="RearLeftWheelJoint" type="revolute">
+      <parent>base_link</parent>
+      <child>RearLeftWheel</child>
+      <pose relative_to="base_link" degrees="true">-1.78 0.95 0.4 -90 0 0</pose>
+      <axis>
+        <xyz>0 1 0</xyz>
+        <limit>
+          <lower>-1.79769e+308</lower>
+          <upper>1.79769e+308</upper>
+          <velocity>50.0</velocity>
+        </limit>
+        <dynamics>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+        <use_parent_model_frame>1</use_parent_model_frame>
+      </axis>
+    </joint>
+    <joint name="RearRightWheelJoint" type="revolute">
+      <parent>base_link</parent>
+      <child>RearRightWheel</child>
+      <pose relative_to="base_link" degrees="true">-1.78 -0.95 0.4 90 0 0</pose>
+      <axis>
+        <xyz>0 1 0</xyz>
+        <limit>
+          <lower>-1.79769e+308</lower>
+          <upper>1.79769e+308</upper>
+          <velocity>50.0</velocity>
+        </limit>
+        <dynamics>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+        <use_parent_model_frame>1</use_parent_model_frame>
+      </axis>
+    </joint>
+
 
     <link name="FrontLeftWheel">
       <pose relative_to="FrontLeftWheelJoint">0 0 0 0 0 0</pose>
@@ -162,20 +327,9 @@
         </surface>
       </collision>
     </link>
-    <link name="FrontLeftWheelSteering">
-      <pose relative_to="servo_0 ">0 0 0 0 0 0</pose>
-      <inertial>
-        <mass>0.005</mass>
-        <inertia>
-          <ixx>0.0000018</ixx>
-          <iyy>0.0000018</iyy>
-          <izz>0.0000018</izz>
-        </inertia>
-      </inertial>
-    </link>
 
-    <link name="RearRightWheel">
-      <pose relative_to="RearRightWheelJoint">0 0 0 0 0 0</pose>
+    <link name="FrontRightWheel">
+      <pose relative_to="FrontRightWheelJoint">0 0 0 0 0 0</pose>
       <inertial>
         <mass>.05</mass>
         <inertia>
@@ -189,8 +343,8 @@
       </inertial>
       <gravity>true</gravity>
       <velocity_decay/>
-      <visual name="RearRightWheelVisual">
-        <pose relative_to="RearRightWheelJoint">0 -0.0 0 0 0 0</pose>
+      <visual name="FrontRightWheelVisual">
+        <pose relative_to="FrontRightWheelJoint">0 -0.0 0 0 0 0</pose>
         <geometry>
           <cylinder>
             <length>0.3</length>
@@ -208,8 +362,8 @@
           </pbr>
         </material>
       </visual>
-      <collision name="RearRightWheelCollision">
-        <pose relative_to="RearRightWheelJoint">0 -0.0 0 0 0 0</pose>
+      <collision name="FrontRightWheelCollision">
+        <pose relative_to="FrontRightWheelJoint">0 -0.0 0 0 0 0</pose>
         <geometry>
           <cylinder>
             <length>0.3</length>
@@ -294,110 +448,65 @@
       </collision>
     </link>
 
-    <joint name="servo_1" type="revolute">
-      <parent>base_link</parent>
-      <child>FrontRightWheelSteering</child>
-      <pose relative_to="base_link">1.78 -0.95 0.4 0 0 0</pose>
-      <axis>
-        <xyz>0 0 1</xyz>
-        <limit>
-          <lower>-0.7854</lower>
-          <upper>0.7854</upper>
-          <velocity>1.0</velocity>
-          <effort>25</effort>
-        </limit>
-        <use_parent_model_frame>1</use_parent_model_frame>
-      </axis>
-    </joint>
-    <joint name="servo_0 " type="revolute">
-      <parent>base_link</parent>
-      <child>FrontLeftWheelSteering</child>
-      <pose relative_to="base_link">1.78 0.95 0.4 0 0 0</pose>
-      <axis>
-        <xyz>0 0 1</xyz>
-        <limit>
-          <lower>-0.7854</lower>
-          <upper>0.7854</upper>
-          <velocity>1.0</velocity>
-          <effort>25</effort>
-        </limit>
-        <use_parent_model_frame>1</use_parent_model_frame>
-      </axis>
-    </joint>
-
-    <joint name="FrontRightWheelJoint" type="revolute">
-      <parent>FrontRightWheelSteering</parent>
-      <child>FrontRightWheel</child>
-      <pose relative_to="servo_1" degrees="true">0 0 0 90 0 0</pose>
-      <axis>
-        <xyz>0 1 0</xyz>
-        <limit>
-          <lower>-1.79769e+308</lower>
-          <upper>1.79769e+308</upper>
-          <velocity>50.0</velocity>
-        </limit>
-        <dynamics>
-          <spring_reference>0</spring_reference>
-          <spring_stiffness>0</spring_stiffness>
-        </dynamics>
-        <use_parent_model_frame>1</use_parent_model_frame>
-      </axis>
-    </joint>
-    <joint name="FrontLeftWheelJoint" type="revolute">
-      <parent>FrontLeftWheelSteering</parent>
-      <child>FrontLeftWheel</child>
-      <pose relative_to="servo_0" degrees="true">0 0 0 -90 0 0</pose>
-      <axis>
-        <xyz>0 1 0</xyz>
-        <limit>
-          <lower>-1.79769e+308</lower>
-          <upper>1.79769e+308</upper>
-          <velocity>50.0</velocity>
-        </limit>
-        <dynamics>
-          <spring_reference>0</spring_reference>
-          <spring_stiffness>0</spring_stiffness>
-        </dynamics>
-        <use_parent_model_frame>1</use_parent_model_frame>
-      </axis>
-    </joint>
-    <joint name="RearRightWheelJoint" type="revolute">
-      <parent>base_link</parent>
-      <child>RearRightWheel</child>
-      <pose relative_to="base_link" degrees="true">-1.78 -0.95 0.4 90 0 0</pose>
-      <axis>
-        <xyz>0 1 0</xyz>
-        <limit>
-          <lower>-1.79769e+308</lower>
-          <upper>1.79769e+308</upper>
-          <velocity>50.0</velocity>
-        </limit>
-        <dynamics>
-          <spring_reference>0</spring_reference>
-          <spring_stiffness>0</spring_stiffness>
-        </dynamics>
-        <use_parent_model_frame>1</use_parent_model_frame>
-      </axis>
-    </joint>
-    <joint name="RearLeftWheelJoint" type="revolute">
-      <parent>base_link</parent>
-      <child>RearLeftWheel</child>
-      <pose relative_to="base_link" degrees="true">-1.78 0.95 0.4 -90 0 0</pose>
-      <axis>
-        <xyz>0 1 0</xyz>
-        <limit>
-          <lower>-1.79769e+308</lower>
-          <upper>1.79769e+308</upper>
-          <velocity>50.0</velocity>
-        </limit>
-        <dynamics>
-          <spring_reference>0</spring_reference>
-          <spring_stiffness>0</spring_stiffness>
-        </dynamics>
-        <use_parent_model_frame>1</use_parent_model_frame>
-      </axis>
-    </joint>
-
+    <link name="RearRightWheel">
+      <pose relative_to="RearRightWheelJoint">0 0 0 0 0 0</pose>
+      <inertial>
+        <mass>.05</mass>
+        <inertia>
+          <ixx>0.00003331</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>0.0000204</iyy>
+          <iyz>0</iyz>
+          <izz>0.0000204</izz>
+        </inertia>
+      </inertial>
+      <gravity>true</gravity>
+      <velocity_decay/>
+      <visual name="RearRightWheelVisual">
+        <pose relative_to="RearRightWheelJoint">0 -0.0 0 0 0 0</pose>
+        <geometry>
+          <cylinder>
+            <length>0.3</length>
+            <radius>0.4</radius>
+          </cylinder>
+        </geometry>
+        <material>
+          <ambient>0.8 0.8 0.8 1</ambient>
+          <diffuse>0.8 0.8 0.8 1</diffuse>
+          <specular>0 0 0 0</specular>
+          <pbr>
+            <metal>
+              <albedo_map>materials/textures/tire4.jpg</albedo_map>
+            </metal>
+          </pbr>
+        </material>
+      </visual>
+      <collision name="RearRightWheelCollision">
+        <pose relative_to="RearRightWheelJoint">0 -0.0 0 0 0 0</pose>
+        <geometry>
+          <cylinder>
+            <length>0.3</length>
+            <radius>0.4</radius>
+          </cylinder>
+        </geometry>
+        <surface>
+          <contact>
+            <ode>
+              <max_vel>100.0</max_vel>
+              <min_depth>0.001</min_depth>
+            </ode>
+          </contact>
+          <friction>
+            <ode>
+              <mu>1.0</mu>
+              <mu2>1.0</mu2>
+              <fdir1>1 0 0</fdir1>
+            </ode>
+          </friction>
+        </surface>
+      </collision>
+    </link>
 
     <!-- <plugin filename="gz-sim-joint-controller-system" name="gz::sim::systems::JointController">
       <joint_name>FrontLeftWheelJoint</joint_name>
@@ -450,25 +559,30 @@
       <d_gain>0</d_gain>
     </plugin> -->
 
-    <plugin filename="gz-sim-ackermann-steering-system" name="gz::sim::systems::AckermannSteering">
-      <left_joint>FrontLeftWheelJoint</left_joint>
+    <plugin filename="ackerman-controller" name="AckermanController">
+      <!-- <left_joint>FrontLeftWheelJoint</left_joint> -->
       <left_joint>RearLeftWheelJoint</left_joint>
-      <right_joint>FrontRightWheelJoint</right_joint>
+      <!-- <right_joint>FrontRightWheelJoint</right_joint> -->
       <right_joint>RearRightWheelJoint</right_joint>
-      <left_steering_joint>servo_0</left_steering_joint>
-      <right_steering_joint>servo_1</right_steering_joint>
+      <left_steering_joint>servo_c</left_steering_joint>
+      <right_steering_joint>servo_c</right_steering_joint>
       <wheel_separation>1.9</wheel_separation>
-      <kingpin_width>1.80</kingpin_width>
+      <!-- <kingpin_width>1.85</kingpin_width> -->
+      <kingpin_width>0.0</kingpin_width>
       <wheel_base>3.56</wheel_base>
-      <steering_limit>0.7854</steering_limit>
+      <steering_limit>0.785</steering_limit>
       <wheel_radius>0.4</wheel_radius>
-      <min_velocity>-1</min_velocity>
-      <max_velocity>1</max_velocity>
-      <min_acceleration>-2</min_acceleration>
-      <max_acceleration>2</max_acceleration>
+      <min_velocity>-0.5</min_velocity>
+      <max_velocity>0.5</max_velocity>
+      <min_acceleration>-6</min_acceleration>
+      <max_acceleration>4</max_acceleration>
+      <steer_p_gain>100.0</steer_p_gain>
     </plugin>
 
-    <plugin filename="drive-to-pose-controller" name="DriveToPoseController"/>
+    <plugin filename="drive-to-pose-controller" name="DriveToPoseController">
+      <linear_p_gain>1.0</linear_p_gain>
+      <angular_p_gain>10.0</angular_p_gain>
+    </plugin>
 
   </model>
 </sdf>
